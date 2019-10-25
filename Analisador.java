@@ -1,9 +1,13 @@
 import java.util.Scanner;
 
 /**
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
- * 
+ * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
+ * "A Casa Mal Assombrada" eh um jogo de aventura muito simples, baseado em texto.
+ *
+ * Essa aplicacao eh o projeto final da disciplina de Praticas de Programacao
+ * Orientada a Objetos do curso de Ciencia da Computacao da Univeridade Federal
+ * de Lavras
+ *
  * Esse analisador le a entrada do usuario e tenta interpreta-la como um
  * comando "Adventure". Cada vez que eh chamado ele le uma linha do terminal
  * e tenta interpretar a linha como um comando de duas palavras. Ele retorna
@@ -13,20 +17,18 @@ import java.util.Scanner;
  * a entrada do usuario com os comandos conhecidos, e se a entrada nao eh um
  * dos comandos conhecidos, ele retorna um objeto comando que eh marcado como
  * um comando desconhecido.
- * 
- * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
- * @version 2011.07.31 (2016.02.01)
+ *
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @version 2019.10.25
  */
-public class Analisador 
-{
+public class Analisador {
     private PalavrasComando palavrasDeComando;  // guarda todas as palavras de comando validas
     private Scanner entrada;         // origem da entrada de comandos
 
     /**
      * Cria um analisador para ler do terminal.
      */
-    public Analisador() 
-    {
+    public Analisador() {
         palavrasDeComando = new PalavrasComando();
         entrada = new Scanner(System.in);
     }
@@ -34,7 +36,7 @@ public class Analisador
     /**
      * @return O proximo comando do usuario
      */
-    public Comando pegarComando() 
+    public Comando pegarComando()
     {
         String linha;   // guardara uma linha inteira
         String palavra1 = null;
@@ -60,7 +62,11 @@ public class Analisador
             return new Comando(palavra1, palavra2);
         }
         else {
-            return new Comando(null, palavra2); 
+            return new Comando(null, palavra2);
+        }
+
+        public String getComandos() {
+            return palavrasDeComando.getComandos();
         }
     }
 }

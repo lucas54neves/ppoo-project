@@ -1,8 +1,10 @@
 /**
- *  Essa eh a classe principal da aplicacao "World of Zull".
- *  "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
- *  Usuarios podem caminhar em um cenario. E eh tudo! Ele realmente
- *  precisa ser estendido para fazer algo interessante!
+ *  Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
+ * "A Casa Mal Assombrada" eh um jogo de aventura muito simples, baseado em texto.
+ *
+ * Essa aplicacao eh o projeto final da disciplina de Praticas de Programacao
+ * Orientada a Objetos do curso de Ciencia da Computacao da Univeridade Federal
+ * de Lavras
  *
  *  Para jogar esse jogo, crie uma instancia dessa classe e chame o metodo
  *  "jogar".
@@ -11,20 +13,18 @@
  *  ambientes, cria o analisador e comeca o jogo. Ela tambeme avalia e
  *  executa os comandos que o analisador retorna.
  *
- * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
- * @version 2011.07.31 (2016.02.01)
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @version 2019.10.25
  */
 
-public class Jogo
-{
+public class Jogo {
     private Analisador analisador;
     private Ambiente ambienteAtual;
 
     /**
      * Cria o jogo e incializa seu mapa interno.
      */
-    public Jogo()
-    {
+    public Jogo() {
         criarAmbientes();
         analisador = new Analisador();
     }
@@ -32,8 +32,7 @@ public class Jogo
     /**
      * Cria todos os ambientes e liga as saidas deles
      */
-    private void criarAmbientes()
-    {
+    private void criarAmbientes() {
         Ambiente fora, anfiteatro, cantina, laboratorio, escritorio, sotao;
 
         // cria os ambientes
@@ -62,8 +61,7 @@ public class Jogo
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
-    public void jogar()
-    {
+    public void jogar() {
         imprimirBoasVindas();
 
         // Entra no loop de comando principal. Aqui nos repetidamente lemos
@@ -80,8 +78,7 @@ public class Jogo
     /**
      * Imprime a mensagem de abertura para o jogador.
      */
-    private void imprimirBoasVindas()
-    {
+    private void imprimirBoasVindas() {
         System.out.println();
         System.out.println("Bem-vindo ao World of Zuul!");
         System.out.println("World of Zuul eh um novo jogo de aventura, incrivelmente chato.");
@@ -96,8 +93,7 @@ public class Jogo
      * @param comando O Comando a ser processado.
      * @return true se o comando finaliza o jogo.
      */
-    private boolean processarComando(Comando comando)
-    {
+    private boolean processarComando(Comando comando) {
         boolean querSair = false;
 
         if(comando.ehDesconhecido()) {
@@ -108,12 +104,12 @@ public class Jogo
         String palavraDeComando = comando.getPalavraDeComando();
         if (palavraDeComando.equals("ajuda")) {
             imprimirAjuda();
-        }
-        else if (palavraDeComando.equals("ir")) {
+        } else if (palavraDeComando.equals("ir")) {
             irParaAmbiente(comando);
-        }
-        else if (palavraDeComando.equals("sair")) {
+        } else if (palavraDeComando.equals("sair")) {
             querSair = sair(comando);
+        } else if (palavraDeComando.equals("observar")) {
+            observar();
         }
 
         return querSair;
@@ -126,13 +122,12 @@ public class Jogo
      * Aqui nos imprimimos algo bobo e enigmatico e a lista de
      * palavras de comando
      */
-    private void imprimirAjuda()
-    {
+    private void imprimirAjuda() {
         System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
         System.out.println("pela universidade.");
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
-        System.out.println("   ir sair ajuda");
+        System.out.println(analisador.getComandos());
     }
 
     /**
@@ -166,8 +161,7 @@ public class Jogo
      * se nos queremos realmente sair do jogo.
      * @return true, se este comando sai do jogo, false, caso contrario
      */
-    private boolean sair(Comando comando)
-    {
+    private boolean sair(Comando comando) {
         if(comando.temSegundaPalavra()) {
             System.out.println("Sair o que?");
             return false;
@@ -184,5 +178,12 @@ public class Jogo
         System.out.println("Voce esta " + ambienteAtual.getDescricao());
         System.out.print("Saidas: " + ambienteAtual.getSaidas());
         System.out.println();
+    }
+
+    /**
+     * "observar" foi digitado. Printa a localizacao atual
+     */
+    private void observar() {
+        imprimir_localizacao_atual();
     }
 }
