@@ -33,29 +33,51 @@ public class Jogo {
      * Cria todos os ambientes e liga as saidas deles
      */
     private void criarAmbientes() {
-        Ambiente fora, anfiteatro, cantina, laboratorio, escritorio, sotao;
+        Ambiente escritorio, sala_tv, jardim, sala_jantar, cozinha;
+        Ambiente quarto1, quarto2, corredor, banheiro1, quarto4;
+        Ambiente quarto3, banheiro2;
 
         // cria os ambientes
-        fora = new Ambiente("do lado de fora da entrada principal de uma universidade");
-        anfiteatro = new Ambiente("no anfiteatro");
-        cantina = new Ambiente("na cantina do campus");
-        laboratorio = new Ambiente("no laboratorio de computacao");
-        escritorio = new Ambiente("na sala de administracao dos computadores");
-        sotao = new Ambiente("no sotao do anfiteatro");
+        escritorio = new Ambiente("no escritorio da casa");
+        sala_tv = new Ambiente("na sala de tv da casa");
+        jardim = new Ambiente("no jardim da casa");
+        sala_jantar = new Ambiente("na sala de jantar da casa");
+        cozinha = new Ambiente("na cozinha da casa");
+        quarto1 = new Ambiente("no primeiro quarto da casa");
+        quarto2 = new Ambiente("no segundo quarto da casa");
+        corredor = new Ambiente("no corredor da casa");
+        banheiro1 = new Ambiente("no primeiro banheiro da casa");
+        quarto4 = new Ambiente("no quarto quarto da casa");
+        quarto3 = new Ambiente("no terceiro quarto da casa");
+        banheiro2 = new Ambiente("no segundo banheiro da casa");
 
         // inicializa as saidas dos ambientes
-        fora.ajustarSaidas("leste", anfiteatro);
-        fora.ajustarSaidas("sul", laboratorio);
-        fora.ajustarSaidas("oeste", cantina);
-        anfiteatro.ajustarSaidas("oeste", fora);
-        anfiteatro.ajustarSaidas("cima", sotao);
-        cantina.ajustarSaidas("leste", fora);
-        laboratorio.ajustarSaidas("norte", fora);
-        laboratorio.ajustarSaidas("leste", escritorio);
-        escritorio.ajustarSaidas("oeste", laboratorio);
-        sotao.ajustarSaidas("baixo", anfiteatro);
+        escritorio.ajustarSaidas("sul", sala_tv);
+        sala_tv.ajustarSaidas("norte", escritorio);
+        sala_tv.ajustarSaidas("oeste", sala_jantar);
+        sala_tv.ajustarSaidas("sul", jardim);
+        jardim.ajustarSaidas("noroeste", sala_tv);
+        jardim.ajustarSaidas("nordeste", cozinha);
+        sala_jantar.ajustarSaidas("oeste", sala_tv);
+        sala_jantar.ajustarSaidas("sul", cozinha);
+        sala_jantar.ajustarSaidas("leste", corredor);
+        cozinha.ajustarSaidas("norte", sala_jantar);
+        cozinha.ajustarSaidas("sul", jardim);
+        quarto1.ajustarSaidas("sul", corredor);
+        quarto2.ajustarSaidas("sul", corredor);
+        corredor.ajustarSaidas("oeste", sala_jantar);
+        corredor.ajustarSaidas("noroeste", quarto1);
+        corredor.ajustarSaidas("nordeste", quarto2);
+        corredor.ajustarSaidas("leste", quarto3);
+        corredor.ajustarSaidas("sudeste", quarto4);
+        corredor.ajustarSaidas("sudoeste", banheiro1);
+        banheiro1.ajustarSaidas("norte", corredor);
+        quarto4.ajustarSaidas("norte", corredor);
+        quarto3.ajustarSaidas("oeste", corredor);
+        quarto3.ajustarSaidas("sul", banheiro2);
+        banheiro2.ajustarSaidas("norte", quarto3);
 
-        ambienteAtual = fora;  // o jogo comeca do lado de fora
+        ambienteAtual = sala_tv;  // o jogo comeca na sala de tv
     }
 
     /**
