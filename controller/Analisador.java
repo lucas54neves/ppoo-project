@@ -1,4 +1,4 @@
-import java.util.Scanner;
+package controller;
 
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
@@ -21,6 +21,10 @@ import java.util.Scanner;
  * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
  * @version 2019.10.25
  */
+
+import model.Comando;
+import java.util.Scanner;
+
 public class Analisador {
     private PalavrasComando palavrasDeComando;  // guarda todas as palavras de comando validas
     private Scanner entrada;         // origem da entrada de comandos
@@ -36,8 +40,7 @@ public class Analisador {
     /**
      * @return O proximo comando do usuario
      */
-    public Comando pegarComando()
-    {
+    public Comando pegarComando() {
         String linha;   // guardara uma linha inteira
         String palavra1 = null;
         String palavra2 = null;
@@ -58,15 +61,14 @@ public class Analisador {
 
         // Agora verifica se esta palavra eh conhecida. Se for, cria um
         // com ela. Se nao, cria um comando "null" (para comando desconhecido)
-        if(palavrasDeComando.ehComando(palavra1)) {
+        if (palavrasDeComando.ehComando(palavra1)) {
             return new Comando(palavra1, palavra2);
-        }
-        else {
+        } else {
             return new Comando(null, palavra2);
         }
+    }
 
-        public String getComandos() {
-            return palavrasDeComando.getComandos();
-        }
+    public String getComandos() {
+        return palavrasDeComando.getComandos();
     }
 }

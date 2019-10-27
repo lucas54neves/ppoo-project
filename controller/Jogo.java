@@ -1,3 +1,8 @@
+package controller;
+
+import model.Ambiente;
+import model.Comando;
+
 /**
  *  Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
  * "A Casa Mal Assombrada" eh um jogo de aventura muito simples, baseado em texto.
@@ -102,8 +107,8 @@ public class Jogo {
      */
     private void imprimirBoasVindas() {
         System.out.println();
-        System.out.println("Bem-vindo ao World of Zuul!");
-        System.out.println("World of Zuul eh um novo jogo de aventura, incrivelmente chato.");
+        System.out.println("Bem-vindo ao A Casa Mal Assombrada!");
+        System.out.println("A Casa Mal Assombrada eh um novo jogo suspense.");
         System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
         System.out.println();
 

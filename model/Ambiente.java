@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Classe Ambiente - um ambiente do jogo.
  *
@@ -25,6 +27,7 @@ public class Ambiente {
      * @param descricao A descricao do ambiente.
      */
     public Ambiente(String descricao) {
+        saidas = new HashMap<String, Ambiente>();
         this.descricao = descricao;
     }
 

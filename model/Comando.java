@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
  * "A Casa Mal Assombrada" eh um jogo de aventura muito simples, baseado em texto.

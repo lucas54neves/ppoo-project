@@ -1,3 +1,7 @@
+package jogo;
+
+import controller.Jogo;
+
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
  * "A Casa Mal Assombrada" eh um jogo de aventura muito simples, baseado em texto.
@@ -14,9 +18,9 @@
 
 public class Programa {
 	public static void main(String[] args) {
-		Jogo jogo = new Jogo();
+		Jogo casaMalAssombrada = new Jogo();
 
-		jogo.jogar();
+		casaMalAssombrada.jogar();
 	}
 
 }
