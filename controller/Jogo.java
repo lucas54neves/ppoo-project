@@ -3,6 +3,9 @@ package controller;
 import model.Ambiente;
 import model.Comando;
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
+import model.Porta;
 
 /**
  *  Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
@@ -28,11 +31,13 @@ public class Jogo {
     private Ambiente ambienteAtual;
     private Random gerador;
     private int quantidadeTentivas;
+    private List<Ambiente> ambientes;
 
     /**
      * Cria o jogo e incializa seu mapa interno.
      */
     public Jogo() {
+        ambientes = new ArrayList<Ambiente>();
         gerador = new Random();
         criarAmbientes();
         analisador = new Analisador();
@@ -43,51 +48,47 @@ public class Jogo {
      * Cria todos os ambientes e liga as saidas deles
      */
     private void criarAmbientes() {
-        Ambiente escritorio, sala_tv, jardim, sala_jantar, cozinha;
-        Ambiente quarto1, quarto2, corredor, banheiro1, quarto4;
-        Ambiente quarto3, banheiro2;
-
         // cria os ambientes
-        escritorio = new Ambiente("no escritorio da casa");
-        sala_tv = new Ambiente("na sala de tv da casa");
-        jardim = new Ambiente("no jardim da casa");
-        sala_jantar = new Ambiente("na sala de jantar da casa");
-        cozinha = new Ambiente("na cozinha da casa");
-        quarto1 = new Ambiente("no primeiro quarto da casa");
-        quarto2 = new Ambiente("no segundo quarto da casa");
-        corredor = new Ambiente("no corredor da casa");
-        banheiro1 = new Ambiente("no primeiro banheiro da casa");
-        quarto4 = new Ambiente("no quarto quarto da casa");
-        quarto3 = new Ambiente("no terceiro quarto da casa");
-        banheiro2 = new Ambiente("no segundo banheiro da casa");
+        ambientes.add(new Ambiente("no escritorio da casa"));
+        ambientes.add(new Ambiente("na sala de tv da casa"));
+        ambientes.add(new Ambiente("no jardim da casa"));
+        ambientes.add(new Ambiente("na sala de jantar da casa"));
+        ambientes.add(new Ambiente("na cozinha da casa"));
+        ambientes.add(new Ambiente("no primeiro quarto da casa"));
+        ambientes.add(new Ambiente("no segundo quarto da casa"));
+        ambientes.add(new Ambiente("no corredor da casa"));
+        ambientes.add(new Ambiente("no primeiro banheiro da casa"));
+        ambientes.add(new Ambiente("no quarto quarto da casa"));
+        ambientes.add(new Ambiente("no terceiro quarto da casa"));
+        ambientes.add(new Ambiente("no segundo banheiro da casa"));
 
         // inicializa as saidas dos ambientes
-        escritorio.ajustarSaidas("sul", sala_tv);
-        sala_tv.ajustarSaidas("norte", escritorio);
-        sala_tv.ajustarSaidas("oeste", sala_jantar);
-        sala_tv.ajustarSaidas("sul", jardim);
-        jardim.ajustarSaidas("noroeste", sala_tv);
-        jardim.ajustarSaidas("nordeste", cozinha);
-        sala_jantar.ajustarSaidas("oeste", sala_tv);
-        sala_jantar.ajustarSaidas("sul", cozinha);
-        sala_jantar.ajustarSaidas("leste", corredor);
-        cozinha.ajustarSaidas("norte", sala_jantar);
-        cozinha.ajustarSaidas("sul", jardim);
-        quarto1.ajustarSaidas("sul", corredor);
-        quarto2.ajustarSaidas("sul", corredor);
-        corredor.ajustarSaidas("oeste", sala_jantar);
-        corredor.ajustarSaidas("noroeste", quarto1);
-        corredor.ajustarSaidas("nordeste", quarto2);
-        corredor.ajustarSaidas("leste", quarto3);
-        corredor.ajustarSaidas("sudeste", quarto4);
-        corredor.ajustarSaidas("sudoeste", banheiro1);
-        banheiro1.ajustarSaidas("norte", corredor);
-        quarto4.ajustarSaidas("norte", corredor);
-        quarto3.ajustarSaidas("oeste", corredor);
-        quarto3.ajustarSaidas("sul", banheiro2);
-        banheiro2.ajustarSaidas("norte", quarto3);
+        ambientes.get(0).ajustarSaidas(new Porta("sul"), ambientes.get(1));
+        ambientes.get(1).ajustarSaidas(new Porta("norte"), ambientes.get(0));
+        ambientes.get(1).ajustarSaidas(new Porta("oeste"), ambientes.get(3));
+        ambientes.get(1).ajustarSaidas(new Porta("sul"), ambientes.get(2));
+        ambientes.get(2).ajustarSaidas(new Porta("noroeste"), ambientes.get(1));
+        ambientes.get(2).ajustarSaidas(new Porta("nordeste"), ambientes.get(4));
+        ambientes.get(3).ajustarSaidas(new Porta("oeste"), ambientes.get(1));
+        ambientes.get(3).ajustarSaidas(new Porta("sul"), ambientes.get(4));
+        ambientes.get(3).ajustarSaidas(new Porta("leste"), ambientes.get(7));
+        ambientes.get(4).ajustarSaidas(new Porta("norte"), ambientes.get(3));
+        ambientes.get(4).ajustarSaidas(new Porta("sul"), ambientes.get(2));
+        ambientes.get(5).ajustarSaidas(new Porta("sul"), ambientes.get(7));
+        ambientes.get(6).ajustarSaidas(new Porta("sul"), ambientes.get(7));
+        ambientes.get(7).ajustarSaidas(new Porta("oeste"), ambientes.get(3));
+        ambientes.get(7).ajustarSaidas(new Porta("noroeste"), ambientes.get(5));
+        ambientes.get(7).ajustarSaidas(new Porta("leste"), ambientes.get(10));
+        ambientes.get(7).ajustarSaidas(new Porta("nordeste"), ambientes.get(6));
+        ambientes.get(7).ajustarSaidas(new Porta("sudoeste"), ambientes.get(8));
+        ambientes.get(7).ajustarSaidas(new Porta("sudeste"), ambientes.get(9));
+        ambientes.get(9).ajustarSaidas(new Porta("norte"), ambientes.get(7));
+        ambientes.get(8).ajustarSaidas(new Porta("norte"), ambientes.get(7));
+        ambientes.get(10).ajustarSaidas(new Porta("oeste"), ambientes.get(7));
+        ambientes.get(10).ajustarSaidas(new Porta("sul"), ambientes.get(11));
+        ambientes.get(11).ajustarSaidas(new Porta("norte"), ambientes.get(10));
 
-        ambienteAtual = sala_tv;  // o jogo comeca na sala de tv
+        ambienteAtual = ambientes.get(1);  // o jogo comeca na sala de tv
     }
 
     /**
@@ -118,6 +119,9 @@ public class Jogo {
         System.out.println();
         System.out.println("Quantidade de Tentativas: " + quantidadeTentivas);
         System.out.println();
+
+        gerarEstados();
+        estados();
 
         imprimir_localizacao_atual();
     }
@@ -226,5 +230,21 @@ public class Jogo {
      */
     private int gerarAleatorio(int min, int max) {
         return (gerador.nextInt(max - min) + 1) + min;
+    }
+
+    /**
+     * Gera aleatoriamente os estados de todas as saidas de todos ambientes
+     */
+    public void gerarEstados() {
+        for (Ambiente ambiente : ambientes) {
+            ambiente.gerarEstados();
+        }
+    }
+
+    // Metodo de Teste
+    public void estados() {
+        for (Ambiente ambiente : ambientes) {
+            System.out.println(ambiente.getDescricao() + " " + ambiente.getEstados());
+        }
     }
 }

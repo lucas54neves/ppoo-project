@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class Ambiente {
     private String descricao;
-    private HashMap<String, Ambiente> saidas;
+    private HashMap<Porta, Ambiente> saidas;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
@@ -27,7 +27,7 @@ public class Ambiente {
      * @param descricao A descricao do ambiente.
      */
     public Ambiente(String descricao) {
-        saidas = new HashMap<String, Ambiente>();
+        saidas = new HashMap<Porta, Ambiente>();
         this.descricao = descricao;
     }
 
@@ -37,7 +37,7 @@ public class Ambiente {
      * @param saida saida do ambiente
      * @param ambiente ambiente
      */
-    public void ajustarSaidas(String saida, Ambiente ambiente) {
+    public void ajustarSaidas(Porta saida, Ambiente ambiente) {
         saidas.put(saida, ambiente);
     }
 
@@ -52,8 +52,8 @@ public class Ambiente {
      * Retorna o ambiente de determinada saida
      * @param saida saida do ambiente
      */
-    public Ambiente getAmbiente(String saida) {
-        return saidas.get(saida);
+    public Ambiente getAmbiente(String nome) {
+        return saidas.get(nome);
     }
 
     /**
@@ -62,8 +62,27 @@ public class Ambiente {
     public String getSaidas() {
         String retorno = "";
 
-        for (String saida : saidas.keySet()) {
-            retorno = retorno + saida + " ";
+        for (Porta saida : saidas.keySet()) {
+            retorno = retorno + saida.getNome() + " ";
+        }
+
+        return retorno;
+    }
+
+    /**
+     * Gera um numero aleatorio entre min e max
+     */
+    public void gerarEstados() {
+        for (Porta saida : saidas.keySet()) {
+            saida.gerarEstado();
+        }
+    }
+
+    // Metodo de Teste
+    public String getEstados() {
+        String retorno = " $- ";
+        for (Porta saida : saidas.keySet()) {
+            retorno = retorno + " " + saida.getEstado();
         }
 
         return retorno;
