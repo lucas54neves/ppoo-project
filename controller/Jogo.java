@@ -2,6 +2,7 @@ package controller;
 
 import model.Ambiente;
 import model.Comando;
+import java.util.Random;
 
 /**
  *  Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
@@ -25,11 +26,12 @@ import model.Comando;
 public class Jogo {
     private Analisador analisador;
     private Ambiente ambienteAtual;
-
+    private Random gerador;
     /**
      * Cria o jogo e incializa seu mapa interno.
      */
     public Jogo() {
+        gerador = new Random();
         criarAmbientes();
         analisador = new Analisador();
     }
@@ -212,5 +214,12 @@ public class Jogo {
      */
     private void observar() {
         imprimir_localizacao_atual();
+    }
+
+    /**
+     * Gera um numero aleatorio entre min e max
+     */
+    private int gerarAleatorio(int min, int max) {
+        return gerador.nextInt(max - min) + 1) + min;
     }
 }
