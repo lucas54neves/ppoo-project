@@ -27,6 +27,8 @@ public class Jogo {
     private Analisador analisador;
     private Ambiente ambienteAtual;
     private Random gerador;
+    private int quantidadeTentivas;
+
     /**
      * Cria o jogo e incializa seu mapa interno.
      */
@@ -34,6 +36,7 @@ public class Jogo {
         gerador = new Random();
         criarAmbientes();
         analisador = new Analisador();
+        quantidadeTentivas = gerarAleatorio(20, 50);
     }
 
     /**
@@ -112,6 +115,8 @@ public class Jogo {
         System.out.println("Bem-vindo ao A Casa Mal Assombrada!");
         System.out.println("A Casa Mal Assombrada eh um novo jogo suspense.");
         System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
+        System.out.println();
+        System.out.println("Quantidade de Tentativas: " + quantidadeTentivas);
         System.out.println();
 
         imprimir_localizacao_atual();
@@ -220,6 +225,6 @@ public class Jogo {
      * Gera um numero aleatorio entre min e max
      */
     private int gerarAleatorio(int min, int max) {
-        return gerador.nextInt(max - min) + 1) + min;
+        return (gerador.nextInt(max - min) + 1) + min;
     }
 }

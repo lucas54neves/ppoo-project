@@ -1,5 +1,3 @@
-package jogo;
-
 import controller.Jogo;
 
 /**
