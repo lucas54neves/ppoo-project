@@ -1,4 +1,4 @@
-package model;
+package casaAssombrada.model;
 
 /**
  * Classe Ambiente - um ambiente do jogo.

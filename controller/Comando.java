@@ -1,4 +1,4 @@
-package controller;
+package casaAssombrada.controller;
 
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".

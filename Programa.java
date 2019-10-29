@@ -1,4 +1,6 @@
-import view.Jogo;
+package casaAssombrada;
+
+import casaAssombrada.view.Jogo;
 
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".

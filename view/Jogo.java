@@ -1,12 +1,12 @@
-package view;
+package casaAssombrada.view;
 
-import controller.Analisador;
-import model.Ambiente;
-import controller.Comando;
+import casaAssombrada.controller.Analisador;
+import casaAssombrada.model.Ambiente;
+import casaAssombrada.controller.Comando;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
-import model.Porta;
+import casaAssombrada.model.Porta;
 
 /**
  *  Esta classe eh parte da aplicacao "A Casa Mal Assombrada".

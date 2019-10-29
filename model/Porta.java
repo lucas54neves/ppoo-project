@@ -1,4 +1,4 @@
-package model;
+package casaAssombrada.model;
 
 import java.util.Random;
 
