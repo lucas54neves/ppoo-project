@@ -53,7 +53,12 @@ public class Ambiente {
      * @param saida saida do ambiente
      */
     public Ambiente getAmbiente(String nome) {
-        return saidas.get(nome);
+        for (Porta porta : saidas.keySet()) {
+            if (porta.getNome().equals(nome)) {
+                return saidas.get(porta);
+            }
+        }
+        return null;
     }
 
     /**

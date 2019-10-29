@@ -32,6 +32,19 @@ public class Jogo {
     private Random gerador;
     private int quantidadeTentivas;
     private List<Ambiente> ambientes;
+    /**
+     * Durabilidade da chave mestra
+     */
+    private int durabilidade;
+    /**
+     * Dica de onde nao esta o tesouro
+     */
+    private int naoEstaTesouro;
+    /**
+     * Dica de onde esta proximo do tesouro
+     */
+    private int proximoTesouro;
+
 
     /**
      * Cria o jogo e incializa seu mapa interno.
@@ -42,6 +55,9 @@ public class Jogo {
         criarAmbientes();
         analisador = new Analisador();
         quantidadeTentivas = gerarAleatorio(20, 50);
+        durabilidade = gerarAleatorio(1, 12);
+        naoEstaTesouro = gerarAleatorio(1, 12);
+        proximoTesouro = gerarAleatorio(1, 12);
     }
 
     /**
@@ -99,9 +115,8 @@ public class Jogo {
 
         // Entra no loop de comando principal. Aqui nos repetidamente lemos
         // comandos e os executamos ate o jogo terminar.
-
         boolean terminado = false;
-        while (! terminado) {
+        while (!terminado && quantidadeTentivas > 0) {
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
         }
@@ -119,9 +134,6 @@ public class Jogo {
         System.out.println();
         System.out.println("Quantidade de Tentativas: " + quantidadeTentivas);
         System.out.println();
-
-        gerarEstados();
-        estados();
 
         imprimir_localizacao_atual();
     }
@@ -192,6 +204,8 @@ public class Jogo {
 
             imprimir_localizacao_atual();
         }
+
+        quantidadeTentivas--;
     }
 
     /**
@@ -213,6 +227,8 @@ public class Jogo {
      * Printa a localizacao atual
      */
     public void imprimir_localizacao_atual() {
+        System.out.println("Quantidade de Tentativas: " + quantidadeTentivas);
+        System.out.println();
         System.out.println("Voce esta " + ambienteAtual.getDescricao());
         System.out.print("Saidas: " + ambienteAtual.getSaidas());
         System.out.println();
