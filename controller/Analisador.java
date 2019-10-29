@@ -22,7 +22,6 @@ package controller;
  * @version 2019.10.25
  */
 
-import model.Comando;
 import java.util.Scanner;
 
 public class Analisador {

@@ -1,4 +1,4 @@
-import controller.Jogo;
+import view.Jogo;
 
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
