@@ -1,7 +1,3 @@
-package casaAssombrada;
-
-import casaAssombrada.View.Jogo;
-
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
  * "A Casa Mal Assombrada" eh um jogo de aventura muito simples, baseado em texto.
@@ -15,6 +11,10 @@ import casaAssombrada.View.Jogo;
  * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
  * @version 2019.10.25
  */
+package br.com.casaassombrada;
+
+import br.com.casaassombrada.view.Jogo;
+
 
 public class Programa {
 	public static void main(String[] args) {

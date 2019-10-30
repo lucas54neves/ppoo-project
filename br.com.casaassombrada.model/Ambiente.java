@@ -11,7 +11,7 @@
  * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
  * @version 2019.10.25
  */
-package casaAssombrada.model;
+package br.com.casaassombrada.model;
 
 import java.util.List;
 import java.util.ArrayList;
