@@ -1,12 +1,3 @@
-package controller;
-
-import model.Ambiente;
-import model.Comando;
-import java.util.Random;
-import java.util.List;
-import java.util.ArrayList;
-import model.Porta;
-
 /**
  *  Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
  * "A Casa Mal Assombrada" eh um jogo de aventura muito simples, baseado em texto.
@@ -25,6 +16,14 @@ import model.Porta;
  * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
  * @version 2019.10.25
  */
+package casaAssombrada.View;
+
+import casaAssombrada.controller.Analisador;
+import casaAssombrada.model.Ambiente;
+import casaAssombrada.controller.Comando;
+import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Jogo {
     private Analisador analisador;
@@ -53,6 +52,7 @@ public class Jogo {
         ambientes = new ArrayList<Ambiente>();
         gerador = new Random();
         criarAmbientes();
+        iniciarAmbientes();
         analisador = new Analisador();
         quantidadeTentivas = gerarAleatorio(20, 50);
         durabilidade = gerarAleatorio(1, 12);
@@ -79,6 +79,34 @@ public class Jogo {
         ambientes.add(new Ambiente("no segundo banheiro da casa"));
 
         // inicializa as saidas dos ambientes
+        ambientes.get(0).ajustarSaidas("sul", ambientes.get(1));
+        ambientes.get(1).ajustarSaidas("norte", ambientes.get(0));
+        ambientes.get(1).ajustarSaidas("oeste", ambientes.get(3));
+        ambientes.get(1).ajustarSaidas("sul", ambientes.get(2));
+        ambientes.get(2).ajustarSaidas("noroeste", ambientes.get(1));
+        ambientes.get(2).ajustarSaidas("nordeste", ambientes.get(4));
+        ambientes.get(3).ajustarSaidas("oeste", ambientes.get(1));
+        ambientes.get(3).ajustarSaidas("sul", ambientes.get(4));
+        ambientes.get(3).ajustarSaidas("leste", ambientes.get(7));
+        ambientes.get(4).ajustarSaidas("norte", ambientes.get(3));
+        ambientes.get(4).ajustarSaidas("sul", ambientes.get(2));
+        ambientes.get(5).ajustarSaidas("sul", ambientes.get(7));
+        ambientes.get(6).ajustarSaidas("sul", ambientes.get(7));
+        ambientes.get(7).ajustarSaidas("oeste", ambientes.get(3));
+        ambientes.get(7).ajustarSaidas("noroeste", ambientes.get(5));
+        ambientes.get(7).ajustarSaidas("leste", ambientes.get(10));
+        ambientes.get(7).ajustarSaidas("nordeste", ambientes.get(6));
+        ambientes.get(7).ajustarSaidas("sudoeste", ambientes.get(8));
+        ambientes.get(7).ajustarSaidas("sudeste", ambientes.get(9));
+        ambientes.get(9).ajustarSaidas("norte", ambientes.get(7));
+        ambientes.get(8).ajustarSaidas("norte", ambientes.get(7));
+        ambientes.get(10).ajustarSaidas("oeste", ambientes.get(7));
+        ambientes.get(10).ajustarSaidas("sul", ambientes.get(11));
+        ambientes.get(11).ajustarSaidas("norte", ambientes.get(10));
+    }
+
+    private void iniciarAmbientes () {
+         // inicializa as saidas dos ambientes
         ambientes.get(0).ajustarSaidas("sul", ambientes.get(1));
         ambientes.get(1).ajustarSaidas("norte", ambientes.get(0));
         ambientes.get(1).ajustarSaidas("oeste", ambientes.get(3));
@@ -133,10 +161,8 @@ public class Jogo {
         System.out.println("A Casa Mal Assombrada eh um novo jogo suspense.");
         System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
         System.out.println();
-        System.out.println("Quantidade de Tentativas: " + quantidadeTentivas);
-        System.out.println();
 
-        imprimir_localizacao_atual();
+        imprimirLocalizacaoAtual();
     }
 
     /**
@@ -175,7 +201,7 @@ public class Jogo {
      */
     private void imprimirAjuda() {
         System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
-        System.out.println("pela universidade.");
+        System.out.println("pela casa.");
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
         System.out.println(analisador.getComandos());
@@ -205,10 +231,11 @@ public class Jogo {
             // Entra nesse if se a porta nao estiver emperrada
             ambienteAtual = proximoAmbiente;
 
-            imprimir_localizacao_atual();
+            imprimirLocalizacaoAtual();
         } else if (!proximoAmbiente.getEstado(direcao)) {
             // Entra nesse if se a porta estiver emperrada
             System.out.println("Passagem emperrada!");
+            imprimirLocalizacaoAtual();
         }
 
         quantidadeTentivas--;
@@ -232,7 +259,7 @@ public class Jogo {
     /**
      * Printa a localizacao atual
      */
-    public void imprimir_localizacao_atual() {
+    public void imprimirLocalizacaoAtual() {
         System.out.println("Quantidade de Tentativas: " + quantidadeTentivas);
         System.out.println();
         System.out.println("Voce esta " + ambienteAtual.getDescricao());
@@ -244,7 +271,7 @@ public class Jogo {
      * "observar" foi digitado. Printa a localizacao atual
      */
     private void observar() {
-        imprimir_localizacao_atual();
+        imprimirLocalizacaoAtual();
     }
 
     /**

@@ -1,4 +1,6 @@
-import controller.Jogo;
+package casaAssombrada;
+
+import casaAssombrada.View.Jogo;
 
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".

@@ -1,5 +1,3 @@
-package controller;
-
 /**
  * Esta classe eh parte da aplicacao "A Casa Mal Assombrada".
  * "A Casa Mal Assombrada" eh um jogo de aventura muito simples, baseado em texto.
@@ -21,8 +19,8 @@ package controller;
  * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
  * @version 2019.10.25
  */
+package casaAssombrada.controller;
 
-import model.Comando;
 import java.util.Scanner;
 
 public class Analisador {
