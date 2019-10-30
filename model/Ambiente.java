@@ -14,11 +14,12 @@ package model;
  * @version 2019.10.25
  */
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Ambiente {
     private String descricao;
-    private HashMap<Porta, Ambiente> saidas;
+    private List<Porta> saidas;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
@@ -27,7 +28,7 @@ public class Ambiente {
      * @param descricao A descricao do ambiente.
      */
     public Ambiente(String descricao) {
-        saidas = new HashMap<Porta, Ambiente>();
+        saidas = new ArrayList<Porta>();
         this.descricao = descricao;
     }
 
@@ -37,8 +38,8 @@ public class Ambiente {
      * @param saida saida do ambiente
      * @param ambiente ambiente
      */
-    public void ajustarSaidas(Porta saida, Ambiente ambiente) {
-        saidas.put(saida, ambiente);
+    public void ajustarSaidas(String saida, Ambiente ambiente) {
+        saidas.add(new Porta(saida, ambiente));
     }
 
     /**
@@ -53,9 +54,9 @@ public class Ambiente {
      * @param saida saida do ambiente
      */
     public Ambiente getAmbiente(String nome) {
-        for (Porta porta : saidas.keySet()) {
+        for (Porta porta : saidas) {
             if (porta.getNome().equals(nome)) {
-                return saidas.get(porta);
+                return porta.getDestino();
             }
         }
         return null;
@@ -67,29 +68,39 @@ public class Ambiente {
     public String getSaidas() {
         String retorno = "";
 
-        for (Porta saida : saidas.keySet()) {
+        for (Porta saida : saidas) {
             retorno = retorno + saida.getNome() + " ";
         }
 
         return retorno;
     }
 
-    /**
-     * Gera um numero aleatorio entre min e max
-     */
-    public void gerarEstados() {
-        for (Porta saida : saidas.keySet()) {
-            saida.gerarEstado();
+    public Porta getSaida(String nome) {
+        for (Porta porta : saidas) {
+            if (porta.getNome().equals(nome)) {
+                return porta;
+            }
         }
+        return null;
     }
 
-    // Metodo de Teste
-    public String getEstados() {
-        String retorno = " $- ";
-        for (Porta saida : saidas.keySet()) {
-            retorno = retorno + " " + saida.getEstado();
+    /**
+     * @return O estado da saida
+     */
+    public boolean getEstado(String nome) {
+        Porta porta = getSaida(nome);
+        if (porta != null) {
+            porta.getEstado();
         }
+        return false;
+    }
 
-        return retorno;
+    /**
+     * Gera aleatoriamente um novo estado para cada porta do ambiente
+     */
+    public void gerarAleatorioPortas() {
+        for (Porta porta : saidas) {
+            porta.gerarAleatorio();
+        }
     }
 }
