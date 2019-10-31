@@ -88,9 +88,8 @@ public class Ambiente {
      */
     public boolean getEstado(String nome) {
         Porta porta = getSaida(nome);
-        if (porta != null) {
-            porta.getEstado();
-        }
+        if (porta != null)
+            return porta.getEstado();
         return false;
     }
 
