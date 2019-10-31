@@ -77,36 +77,12 @@ public class Jogo {
         ambientes.add(new Ambiente("no quarto quarto da casa"));
         ambientes.add(new Ambiente("no terceiro quarto da casa"));
         ambientes.add(new Ambiente("no segundo banheiro da casa"));
-
-        // inicializa as saidas dos ambientes
-        ambientes.get(0).ajustarSaidas("sul", ambientes.get(1));
-        ambientes.get(1).ajustarSaidas("norte", ambientes.get(0));
-        ambientes.get(1).ajustarSaidas("oeste", ambientes.get(3));
-        ambientes.get(1).ajustarSaidas("sul", ambientes.get(2));
-        ambientes.get(2).ajustarSaidas("noroeste", ambientes.get(1));
-        ambientes.get(2).ajustarSaidas("nordeste", ambientes.get(4));
-        ambientes.get(3).ajustarSaidas("oeste", ambientes.get(1));
-        ambientes.get(3).ajustarSaidas("sul", ambientes.get(4));
-        ambientes.get(3).ajustarSaidas("leste", ambientes.get(7));
-        ambientes.get(4).ajustarSaidas("norte", ambientes.get(3));
-        ambientes.get(4).ajustarSaidas("sul", ambientes.get(2));
-        ambientes.get(5).ajustarSaidas("sul", ambientes.get(7));
-        ambientes.get(6).ajustarSaidas("sul", ambientes.get(7));
-        ambientes.get(7).ajustarSaidas("oeste", ambientes.get(3));
-        ambientes.get(7).ajustarSaidas("noroeste", ambientes.get(5));
-        ambientes.get(7).ajustarSaidas("leste", ambientes.get(10));
-        ambientes.get(7).ajustarSaidas("nordeste", ambientes.get(6));
-        ambientes.get(7).ajustarSaidas("sudoeste", ambientes.get(8));
-        ambientes.get(7).ajustarSaidas("sudeste", ambientes.get(9));
-        ambientes.get(9).ajustarSaidas("norte", ambientes.get(7));
-        ambientes.get(8).ajustarSaidas("norte", ambientes.get(7));
-        ambientes.get(10).ajustarSaidas("oeste", ambientes.get(7));
-        ambientes.get(10).ajustarSaidas("sul", ambientes.get(11));
-        ambientes.get(11).ajustarSaidas("norte", ambientes.get(10));
+        
     }
 
     private void iniciarAmbientes () {
-         // inicializa as saidas dos ambientes
+               
+        // inicializa as saidas dos ambientes
         ambientes.get(0).ajustarSaidas("sul", ambientes.get(1));
         ambientes.get(1).ajustarSaidas("norte", ambientes.get(0));
         ambientes.get(1).ajustarSaidas("oeste", ambientes.get(3));
