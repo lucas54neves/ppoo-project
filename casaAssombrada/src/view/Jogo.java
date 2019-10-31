@@ -16,11 +16,11 @@
  * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
  * @version 2019.10.25
  */
-package br.com.casaassombrada.view;
+package view;
 
-import br.com.casaassombrada.controller.Analisador;
-import br.com.casaassombrada.model.Ambiente;
-import br.com.casaassombrada.controller.Comando;
+import controller.Analisador;
+import model.Ambiente;
+import controller.Comando;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;

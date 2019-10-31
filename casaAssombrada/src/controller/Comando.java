@@ -20,7 +20,7 @@
  * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
  * @version 2019.10.25
  */
-package br.com.casaassombrada.controller;
+package controller;
 
 public class Comando {
     private String palavraDeComando;

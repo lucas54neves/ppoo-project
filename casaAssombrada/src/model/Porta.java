@@ -14,7 +14,7 @@
  * @version 2019.10.30
  */
 
-package br.com.casaassombrada.model;
+package model;
 
 import java.util.Random;
 
