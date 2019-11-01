@@ -16,7 +16,7 @@ package model;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Ambiente {
+public abstract class Ambiente {
     private String descricao;
     private List<Porta> saidas;
 
@@ -84,13 +84,16 @@ public class Ambiente {
     }
 
     /**
+     * @param nome
      * @return O estado da saida
      */
     public boolean getEstado(String nome) {
         Porta porta = getSaida(nome);
-        if (porta != null)
+        if (porta != null) {
             return porta.getEstado();
-        return false;
+        } else {
+            return false;
+        }
     }
 
     /**

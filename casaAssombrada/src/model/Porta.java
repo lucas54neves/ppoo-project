@@ -19,15 +19,13 @@ package model;
 import java.util.Random;
 
 public class Porta {
-    private String nome;
-    private Ambiente destino;
-    private Random gerador;
+    private final String nome;
+    private final Ambiente destino;
     private boolean estado;
 
     public Porta(String nome, Ambiente destino) {
         this.nome = nome;
         this.destino = destino;
-        gerador = new Random();
         estado = false;
     }
 
@@ -44,6 +42,6 @@ public class Porta {
     }
 
     public void gerarAleatorio() {
-        estado = gerador.nextBoolean();
+        estado = new Random().nextBoolean();
     }
 }
