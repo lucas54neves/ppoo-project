@@ -2,14 +2,14 @@ package model;
 
 import java.util.Random;
 
-public class SalaEstar extends Ambiente {
-    private boolean sofaFurado;
+public class SalaJantar extends Ambiente {
+    private boolean mesaCheiaCorpos;
     private boolean fantasma;
     private boolean moveisSeMovendo;
 
-    public SalaEstar(String descricao) {
+    public SalaJantar(String descricao) {
         super(descricao);
-        sofaFurado = new Random().nextBoolean();
+        mesaCheiaCorpos = new Random().nextBoolean();
         fantasma = new Random().nextBoolean();
         moveisSeMovendo = new Random().nextBoolean();
     }
@@ -17,13 +17,13 @@ public class SalaEstar extends Ambiente {
     @Override
     public String toString() {
         String retorno = super.getDescricao() + '\n';
-        if (sofaFurado) {
-            retorno += "Sofá furado\n";
+        if (mesaCheiaCorpos) {
+            retorno += "Mesa cheia de corpos\n";
         } else {
-            retorno += "Sofá em perfeito estado\n";
+            retorno += "Mesa vazia\n";
         }
         if (fantasma) {
-            retorno += "Fantasma na sala de estar\n";
+            retorno += "Fantasma na sala de jantar\n";
         } else {
             retorno += "Não tem fantasma\n";
         }

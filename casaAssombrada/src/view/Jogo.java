@@ -24,6 +24,14 @@ import controller.Comando;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import model.Banheiro;
+import model.Corredor;
+import model.Cozinha;
+import model.Escritorio;
+import model.Jardim;
+import model.Quarto;
+import model.SalaJantar;
+import model.SalaTv;
 
 public class Jogo {
     private Analisador analisador;
@@ -65,18 +73,18 @@ public class Jogo {
      */
     private void criarAmbientes() {
         // cria os ambientes
-        ambientes.add(new Ambiente("no escritorio da casa"));
-        ambientes.add(new Ambiente("na sala de tv da casa"));
-        ambientes.add(new Ambiente("no jardim da casa"));
-        ambientes.add(new Ambiente("na sala de jantar da casa"));
-        ambientes.add(new Ambiente("na cozinha da casa"));
-        ambientes.add(new Ambiente("no primeiro quarto da casa"));
-        ambientes.add(new Ambiente("no segundo quarto da casa"));
-        ambientes.add(new Ambiente("no corredor da casa"));
-        ambientes.add(new Ambiente("no primeiro banheiro da casa"));
-        ambientes.add(new Ambiente("no quarto quarto da casa"));
-        ambientes.add(new Ambiente("no terceiro quarto da casa"));
-        ambientes.add(new Ambiente("no segundo banheiro da casa"));
+        ambientes.add(new Escritorio("Escritorio da casa"));
+        ambientes.add(new SalaTv("Sala de tv da casa"));
+        ambientes.add(new Jardim("Jardim da casa"));
+        ambientes.add(new SalaJantar("Sala de jantar da casa"));
+        ambientes.add(new Cozinha("Cozinha da casa"));
+        ambientes.add(new Quarto("Primeiro quarto da casa"));
+        ambientes.add(new Quarto("Segundo quarto da casa"));
+        ambientes.add(new Corredor("Corredor da casa"));
+        ambientes.add(new Banheiro("Primeiro banheiro da casa"));
+        ambientes.add(new Quarto("Quarto quarto da casa"));
+        ambientes.add(new Quarto("Terceiro quarto da casa"));
+        ambientes.add(new Banheiro("Segundo banheiro da casa"));
         
     }
 
