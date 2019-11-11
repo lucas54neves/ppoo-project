@@ -1,3 +1,13 @@
+/**
+ * Classe SalaTV - A sala de televisao da casa.
+ *
+ * Uma "SalaTV" representa a sala de televisao da casa. 
+ * A sala de televisao tem uma TV que pode estar quebrada ou passando
+ * um filme de terror e pode ter sangue pela sala. Os atributos sao gerados
+ * aleatoriamente para simular um ambiente mal assombrado.
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @version 2019.10.25
+ */
 package model;
 
 import java.util.Random;

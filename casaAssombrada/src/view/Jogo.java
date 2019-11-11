@@ -10,7 +10,7 @@
  *  "jogar".
  *
  *  Essa classe principal cria e inicializa todas as outras: ela cria os
- *  ambientes, cria o analisador e comeca o jogo. Ela tambeme avalia e
+ *  ambientes, cria o analisador e comeca o jogo. Ela tambem avalia e
  *  executa os comandos que o analisador retorna.
  *
  * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
@@ -37,7 +37,7 @@ public class Jogo {
     private Analisador analisador;
     private Ambiente ambienteAtual;
     private Random gerador;
-    private int quantidadeTentivas;
+    private int quantidadeTentativas;
     private List<Ambiente> ambientes;
     /**
      * Durabilidade da chave mestra
@@ -51,6 +51,10 @@ public class Jogo {
      * Dica de onde esta proximo do tesouro
      */
     private int proximoTesouro;
+    /**
+     * Localizacao do tesouro
+     */
+    private int localizacaoTesouro;
 
 
     /**
@@ -62,10 +66,11 @@ public class Jogo {
         criarAmbientes();
         iniciarAmbientes();
         analisador = new Analisador();
-        quantidadeTentivas = gerarAleatorio(20, 50);
+        quantidadeTentativas = gerarAleatorio(20, 50);
         durabilidade = gerarAleatorio(1, 12);
-        naoEstaTesouro = gerarAleatorio(1, 12);
-        proximoTesouro = gerarAleatorio(1, 12);
+        naoEstaTesouro = gerarAleatorio(0, 11);
+        proximoTesouro = gerarAleatorio(0, 11);
+        localizacaoTesouro = gerarAleatorio(0, 11);
     }
 
     /**
@@ -117,7 +122,6 @@ public class Jogo {
         ambientes.get(11).ajustarSaidas("norte", ambientes.get(10));
 
         ambienteAtual = ambientes.get(1);  // o jogo comeca na sala de tv
-        gerarEstados();
     }
 
     /**
@@ -125,15 +129,21 @@ public class Jogo {
      */
     public void jogar() {
         imprimirBoasVindas();
-
         // Entra no loop de comando principal. Aqui nos repetidamente lemos
         // comandos e os executamos ate o jogo terminar.
-        boolean terminado = false;
-        while (!terminado && quantidadeTentivas > 0) {
+        int terminado = 0;
+        while (terminado < 1 && quantidadeTentativas > 0) {
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
         }
-        System.out.println("Obrigado por jogar. Ate mais!");
+        if(terminado == 1)
+            System.out.println("Obrigado por jogar. Ate mais!");
+        else if(quantidadeTentativas == 0)
+            System.out.println("Game Over! Suas tentativas acabaram!");
+        else if(terminado == 2)
+            System.out.println("CONGRATULATIONS!!! Voce venceu!!! Voce encontrou o tesouro escondido!");
+        else if(terminado == 3)
+            System.out.println("GAME OVER! Voce gastou sua carga explosiva e nao encontrou o tesouro.");
     }
 
     /**
@@ -142,9 +152,13 @@ public class Jogo {
     private void imprimirBoasVindas() {
         System.out.println();
         System.out.println("Bem-vindo ao A Casa Mal Assombrada!");
-        System.out.println("A Casa Mal Assombrada eh um novo jogo suspense.");
+        System.out.println("A Casa Mal Assombrada eh um novo jogo de suspense.");
         System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
         System.out.println();
+        System.out.print("Onde o tesouro nao esta ");
+        System.out.println(ambientes.get(naoEstaTesouro).getDescricao());
+        System.out.print("Onde o tesouro esta proximo ");
+        System.out.println(ambientes.get(proximoTesouro).getDescricao());
 
         imprimirLocalizacaoAtual();
     }
@@ -152,14 +166,13 @@ public class Jogo {
     /**
      * Dado um comando, processa-o (ou seja, executa-o)
      * @param comando O Comando a ser processado.
-     * @return true se o comando finaliza o jogo.
+     * @return int que corresponde aos comandos do jogo.
      */
-    private boolean processarComando(Comando comando) {
-        boolean querSair = false;
+    private int processarComando(Comando comando) {
 
         if(comando.ehDesconhecido()) {
             System.out.println("Eu nao entendi o que voce disse...");
-            return false;
+            return 0;
         }
 
         String palavraDeComando = comando.getPalavraDeComando();
@@ -168,12 +181,18 @@ public class Jogo {
         } else if (palavraDeComando.equals("ir")) {
             irParaAmbiente(comando);
         } else if (palavraDeComando.equals("sair")) {
-            querSair = sair(comando);
+            return sair(comando);
         } else if (palavraDeComando.equals("observar")) {
             observar();
         }
+        else if(palavraDeComando.equals("explodir")){
+            if(ambienteAtual.getDescricao().equals(ambientes.get(localizacaoTesouro).getDescricao()))
+                return 2;
+            else
+                return 3;
+        }
 
-        return querSair;
+        return 0;
     }
 
     // Implementacoes dos comandos do usuario
@@ -184,8 +203,7 @@ public class Jogo {
      * palavras de comando
      */
     private void imprimirAjuda() {
-        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
-        System.out.println("pela casa.");
+        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha pela casa");
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
         System.out.println(analisador.getComandos());
@@ -222,7 +240,7 @@ public class Jogo {
             imprimirLocalizacaoAtual();
         }
 
-        quantidadeTentivas--;
+        quantidadeTentativas--;
     }
 
     /**
@@ -230,13 +248,13 @@ public class Jogo {
      * se nos queremos realmente sair do jogo.
      * @return true, se este comando sai do jogo, false, caso contrario
      */
-    private boolean sair(Comando comando) {
+    private int sair(Comando comando) {
         if(comando.temSegundaPalavra()) {
             System.out.println("Sair o que?");
-            return false;
+            return 0;
         }
         else {
-            return true;  // sinaliza que nos queremos sair
+            return 1;  // sinaliza que nos queremos sair
         }
     }
 
@@ -244,9 +262,10 @@ public class Jogo {
      * Printa a localizacao atual
      */
     public void imprimirLocalizacaoAtual() {
-        System.out.println("Quantidade de Tentativas: " + quantidadeTentivas);
+        System.out.println("Quantidade de Tentativas: " + quantidadeTentativas);
         System.out.println();
-        System.out.println("Voce esta " + ambienteAtual.getDescricao());
+        System.out.print("Voce esta ");
+        System.out.println(ambienteAtual);
         System.out.print("Saidas: " + ambienteAtual.getSaidas());
         System.out.println();
     }
@@ -263,14 +282,5 @@ public class Jogo {
      */
     private int gerarAleatorio(int min, int max) {
         return (gerador.nextInt(max - min) + 1) + min;
-    }
-
-    /**
-     * Gera aleatoriamente os estados de todas as saidas de todos ambientes
-     */
-    public void gerarEstados() {
-        for (Ambiente ambiente : ambientes) {
-            ambiente.gerarAleatorioPortas();
-        }
     }
 }

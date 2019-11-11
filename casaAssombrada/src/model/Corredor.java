@@ -1,3 +1,13 @@
+/**
+ * Classe Corredor - um corredor da casa.
+ *
+ * Um "Corredor" representa o corredor da casa que liga os quartos e o banheiro. 
+ * O corredor pode ter luzes piscando e fantasmas. Os atributos sao
+ * gerados aleratoriamente para simular um ambiente mal assombrado.
+ *
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @version 2019.10.25
+ */
 package model;
 
 import java.util.Random;

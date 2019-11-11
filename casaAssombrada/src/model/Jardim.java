@@ -1,3 +1,12 @@
+/**
+ * Classe Jardim - O jardim da casa.
+ *
+ * Um "Jardim" representa o jardim da casa. 
+ * O jardim pode ter covas abertas e esqueletos espalhados.
+ * Os atributos sao gerados aleratoriamente para simular um ambiente mal assombrado.
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @version 2019.10.25
+ */
 package model;
 
 import java.util.Random;

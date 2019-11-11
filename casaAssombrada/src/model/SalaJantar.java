@@ -1,3 +1,13 @@
+/**
+ * Classe SalaJantar - A sala de jantar da casa.
+ *
+ * Uma "SalaJantar" representa a sala de jantar da casa. 
+ * A sala de jantar tem uma mesa que pode estar cheia de corpos ou vazia,
+ * pode ter um fantasma e moveis parados ou se movendo. Os atributos sao 
+ * gerados aleatoriamente para simular um ambiente mal assombrado.
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @version 2019.10.25
+ */
 package model;
 
 import java.util.Random;

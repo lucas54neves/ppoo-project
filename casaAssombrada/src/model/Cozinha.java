@@ -1,3 +1,13 @@
+/**
+ * Classe Cozinha - A cozinha da casa.
+ *
+ * Uma "Cozinha" representa a cozinha da casa. 
+ * A cozinha pode ter armarios abertos ou fechados, utensilios espalhados ou nos armarios,
+ * sangue e corpos espalhados. Os atributos sao gerados aleratoriamente 
+ * para simular um ambiente mal assombrado.
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @version 2019.10.25
+ */
 package model;
 
 import java.util.Random;

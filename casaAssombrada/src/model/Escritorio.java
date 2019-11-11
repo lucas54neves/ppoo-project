@@ -1,3 +1,12 @@
+/**
+ * Classe Escritorio - O escritorio da casa.
+ *
+ * Um "Escritorio" representa o escritorio da casa. 
+ * O escritorio pode ter sangue nos videos e um corpo na mesa.
+ * Os atributos sao gerados aleratoriamente para simular um ambiente mal assombrado.
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @version 2019.10.25
+ */
 package model;
 
 import java.util.Random;

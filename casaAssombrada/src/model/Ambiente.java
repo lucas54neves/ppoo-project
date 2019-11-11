@@ -15,10 +15,11 @@ package model;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Ambiente {
     private String descricao;
-    private List<Porta> saidas;
+    private HashMap<String, Porta> saidas;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
@@ -27,7 +28,7 @@ public abstract class Ambiente {
      * @param descricao A descricao do ambiente.
      */
     public Ambiente(String descricao) {
-        saidas = new ArrayList<Porta>();
+        saidas = new HashMap<String, Porta>();
         this.descricao = descricao;
     }
 
@@ -38,7 +39,9 @@ public abstract class Ambiente {
      * @param ambiente ambiente
      */
     public void ajustarSaidas(String saida, Ambiente ambiente) {
-        saidas.add(new Porta(saida, ambiente));
+        Porta porta = new Porta(saida, ambiente);
+        porta.gerarAleatorio();
+        saidas.put(saida, porta);
     }
 
     /**
@@ -49,16 +52,11 @@ public abstract class Ambiente {
     }
 
     /**
-     * Retorna o ambiente de determinada saida
-     * @param saida saida do ambiente
+     * @param nome localizacao da porta, ex: sul, leste, oeste, etc..
+     * @return destino da porta, ou null em caso de não existir.
      */
     public Ambiente getAmbiente(String nome) {
-        for (Porta porta : saidas) {
-            if (porta.getNome().equals(nome)) {
-                return porta.getDestino();
-            }
-        }
-        return null;
+        return saidas.get(nome).getDestino();
     }
 
     /**
@@ -66,25 +64,20 @@ public abstract class Ambiente {
      */
     public String getSaidas() {
         String retorno = "";
-
-        for (Porta saida : saidas) {
-            retorno = retorno + saida.getNome() + " ";
+        
+        for (String saida : saidas.keySet()) {
+            retorno = retorno + saida + " ";
         }
 
         return retorno;
     }
 
     public Porta getSaida(String nome) {
-        for (Porta porta : saidas) {
-            if (porta.getNome().equals(nome)) {
-                return porta;
-            }
-        }
-        return null;
+        return saidas.get(nome);
     }
 
     /**
-     * @param nome
+     * @param nome da porta
      * @return O estado da saida
      */
     public boolean getEstado(String nome) {
@@ -93,15 +86,6 @@ public abstract class Ambiente {
             return porta.getEstado();
         } else {
             return false;
-        }
-    }
-
-    /**
-     * Gera aleatoriamente um novo estado para cada porta do ambiente
-     */
-    public void gerarAleatorioPortas() {
-        for (Porta porta : saidas) {
-            porta.gerarAleatorio();
         }
     }
 }

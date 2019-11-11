@@ -56,7 +56,6 @@ public class Analisador {
                 // obs: nos simplesmente ignoramos o resto da linha.
             }
         }
-
         // Agora verifica se esta palavra eh conhecida. Se for, cria um
         // com ela. Se nao, cria um comando "null" (para comando desconhecido)
         if (palavrasDeComando.ehComando(palavra1)) {
