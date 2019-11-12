@@ -4,9 +4,9 @@ Repository for the final project of the Practices of Object-Oriented Programming
 
 # Requisitos Não-Funcionais
 - [ ] O trabalho deverá usar corretamente os conceitos de Orientação a Objetos.
-- [ ] O trabalho deverá fazer uso de composição e/ou agregação.
-- [ ] O trabalho deverá fazer uso de herança.
-- [ ] O trabalho deverá fazer uso de polimorfismo (variável polimórfica e polimorfismo de
+- [X] O trabalho deverá fazer uso de composição e/ou agregação.
+- [X] O trabalho deverá fazer uso de herança.
+- [X] O trabalho deverá fazer uso de polimorfismo (variável polimórfica e polimorfismo de
 método).
 - [ ] O trabalho deverá ter um bom Design de Classes.
 - [ ] O código deverá estar comentado para permitir a geração da documentação Javadoc do
