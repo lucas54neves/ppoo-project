@@ -18,8 +18,7 @@ import view.Jogo;
 
 public class Programa {
 	public static void main(String[] args) {
-		Jogo casaMalAssombrada = new Jogo();
-
+		Jogo casaMalAssombrada = Jogo.getInstance();
 		casaMalAssombrada.jogar();
 	}
 
