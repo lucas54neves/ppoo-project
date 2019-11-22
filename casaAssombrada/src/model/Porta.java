@@ -34,6 +34,10 @@ public class Porta {
     }
 
     public boolean getEstado() {
+//        gerarAleatorio();
+        //System.out.println("est: " + estado);
+        gerarAleatorio();
+        //System.out.println("ESTADO: " + estado);
         return estado;
     }
 
