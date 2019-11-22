@@ -13,7 +13,7 @@ package controller;
 public class PalavrasComando {
     // um vetor constante que guarda todas as palavras de comandos validas
     private static final String[] comandosValidos = {
-        "ir", "sair", "ajuda", "observar", "explodir"
+        "Ir", "Sair", "Ajuda", "Observar", "Explodir"
     };
 
     /**
@@ -44,9 +44,13 @@ public class PalavrasComando {
         String retorno = "";
 
         for (String comando : comandosValidos) {
-            retorno = retorno + comando + " ";
+            retorno = retorno + comando + "  ";
         }
 
         return retorno;
+    }
+    
+    public static String getComando(int pos) {
+        return comandosValidos[pos];
     }
 }
