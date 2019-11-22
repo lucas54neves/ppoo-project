@@ -38,24 +38,19 @@ public class Analisador {
     /**
      * @return O proximo comando do usuario
      */
-    public Comando pegarComando() {
-        String linha;   // guardara uma linha inteira
+    public Comando pegarComando(String linha) {
+        
+        String[] vetPalavra = linha.split(" ");
         String palavra1 = null;
-        String palavra2 = null;
-
-        System.out.print("> ");     // imprime o prompt
-
-        linha = entrada.nextLine();
-
-        // Tenta encontrar ate duas palavras na linha
-        Scanner tokenizer = new Scanner(linha);
-        if(tokenizer.hasNext()) {
-            palavra1 = tokenizer.next();      // pega a primeira palavra
-            if(tokenizer.hasNext()) {
-                palavra2 = tokenizer.next();      // pega a segunda palavra
-                // obs: nos simplesmente ignoramos o resto da linha.
-            }
+        String palavra2  = null;
+        
+        if (vetPalavra.length > 1) {
+            palavra1 = vetPalavra[0].trim();
+            palavra2 = linha.split("Ir")[1].trim();
+        } else {
+            palavra1 = linha.trim();
         }
+
         // Agora verifica se esta palavra eh conhecida. Se for, cria um
         // com ela. Se nao, cria um comando "null" (para comando desconhecido)
         if (palavrasDeComando.ehComando(palavra1)) {
