@@ -19,6 +19,10 @@ import java.util.HashMap;
 
 public abstract class Ambiente {
     private String descricao;
+    private String dica;
+    private boolean dicaAcessada;
+    private boolean chaveMestra;
+    private boolean tesouro;
     private HashMap<String, Porta> saidas;
 
     /**
@@ -28,6 +32,10 @@ public abstract class Ambiente {
      * @param descricao A descricao do ambiente.
      */
     public Ambiente(String descricao) {
+        dica = "";
+        dicaAcessada = false;
+        chaveMestra = false;
+        tesouro = false;
         saidas = new HashMap<String, Porta>();
         this.descricao = descricao;
     }
@@ -52,11 +60,21 @@ public abstract class Ambiente {
     }
 
     /**
-     * @param nome localizacao da porta, ex: sul, leste, oeste, etc..
+     * @param saida localizacao da porta, ex: sul, leste, oeste, etc..
      * @return destino da porta, ou null em caso de não existir.
      */
-    public Ambiente getAmbiente(String nome) {
-        return saidas.get(nome).getDestino();
+    public Ambiente getAmbiente(String saida) {
+        try {
+//            System.out.println("saida : " + saida);
+//            for (String k : saidas.keySet()) {
+//                System.out.println("KEY : " + k);
+//                System.out.println("Equals : " + k.equals(saida));
+//            }
+            //System.out.println("Contains : "  + saidas.containsKey(saida.trim()));
+            return saidas.get(saida).getDestino();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -66,14 +84,18 @@ public abstract class Ambiente {
         String retorno = "";
         
         for (String saida : saidas.keySet()) {
-            retorno = retorno + saida + " ";
+            retorno += saida + "\t";
         }
 
         return retorno;
     }
 
     public Porta getSaida(String nome) {
-        return saidas.get(nome);
+        try {
+            return saidas.get(nome);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -82,10 +104,44 @@ public abstract class Ambiente {
      */
     public boolean getEstado(String nome) {
         Porta porta = getSaida(nome);
+  //      System.out.println("NOME ESTADO: " + porta);
         if (porta != null) {
             return porta.getEstado();
         } else {
             return false;
         }
     }
+
+    public void setDica(String dica) {
+        this.dica = dica;
+    }
+
+    public void setChaveMestra() {
+        this.chaveMestra = true;
+    }
+
+    public void setTesouro() {
+        this.tesouro = true;
+    }
+
+    public String getDica() {
+        return dica;
+    }
+
+    public boolean isChaveMestra() {
+        return chaveMestra;
+    }
+
+    public boolean isTesouro() {
+        return tesouro;
+    }
+
+    public void setDicaAcessada(boolean dicaAcessada) {
+        this.dicaAcessada = dicaAcessada;
+    }
+
+    public boolean isDicaAcessada() {
+        return dicaAcessada;
+    }
+ 
 }
