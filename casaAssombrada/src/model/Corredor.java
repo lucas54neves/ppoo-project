@@ -16,12 +16,20 @@ public class Corredor extends Ambiente {
     private boolean luzesPiscando;
     private boolean fantasma;
 
+    /**
+     * Construtor do ambiente Corredor
+     * @param descricao 
+     */
     public Corredor(String descricao) {
         super(descricao);
         luzesPiscando = new Random().nextBoolean();
         fantasma = new Random().nextBoolean();
     }
 
+    /**
+     * Metodo para retornar as informacoes do ambiente como uma String
+     * @return String informacoes do ambiente
+     */
     @Override
     public String toString() {
         String retorno = super.getDescricao() + '\n';
@@ -37,6 +45,4 @@ public class Corredor extends Ambiente {
         }
         return retorno;
     }
-    
-    
 }

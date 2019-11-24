@@ -4,8 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- *
-* @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
+ * @author  Andrew Takeshi, Davi Horner, Lucas Neves e Ruan Basilio
  * @version 2019.10.25
  */
 public class SistemaDeArquivoTxt {

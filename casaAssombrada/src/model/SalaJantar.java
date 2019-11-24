@@ -17,6 +17,10 @@ public class SalaJantar extends Ambiente {
     private boolean fantasma;
     private boolean moveisSeMovendo;
 
+    /**
+     * Construor do ambiente Sala de Jantar
+     * @param descricao 
+     */
     public SalaJantar(String descricao) {
         super(descricao);
         mesaCheiaCorpos = new Random().nextBoolean();
@@ -24,6 +28,10 @@ public class SalaJantar extends Ambiente {
         moveisSeMovendo = new Random().nextBoolean();
     }
     
+    /**
+     * Metodo para retornar as informacoes do ambiente como uma String
+     * @return String informacoes do ambiente
+     */
     @Override
     public String toString() {
         String retorno = super.getDescricao() + '\n';

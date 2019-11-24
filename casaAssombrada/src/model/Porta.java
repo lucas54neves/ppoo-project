@@ -23,35 +23,52 @@ public class Porta {
     private final Ambiente destino;
     private boolean estado;
 
+    /**
+     * Construtor da Porta
+     * @param nome
+     * @param destino 
+     */
     public Porta(String nome, Ambiente destino) {
         this.nome = nome;
         this.destino = destino;
         estado = false;
     }
 
+    /**
+     * Retorna o nome da porta
+     * @return String nome da porta
+     */
     public String getNome() {
         return nome;
     }
 
+    /**
+     * Seta o estado da porta
+     */
     public void setEstado() {
         this.estado = new Random().nextBoolean();
     }
     
+    /**
+     * Retorna o estado da porta
+     * @return boolean estado da porta
+     */
     public boolean getEstado() {
-//        gerarAleatorio();
-        //System.out.println("est: " + estado);
-        
-        //System.out.println("ESTADO: " + estado);
         return estado;
     }
 
+    /**
+     * Retorna o ambiente de destino da prota
+     * @return Ambiente destino
+     */
     public Ambiente getDestino() {
         return destino;
     }
 
+    /**
+     * Gera um estado aletatorio para a porta
+     */
     public void gerarAleatorio() {
-        System.out.println("Estou aqui");
         estado = new Random().nextBoolean();
-        System.out.println(estado);
     }
 }

@@ -32,15 +32,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-
 import controller.Analisador;
 import model.Ambiente;
 import controller.Comando;
 import controller.PalavrasComando;
 import controller.SistemaDeArquivoTxt;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Label;
 import java.awt.event.WindowEvent;
@@ -48,7 +45,6 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 import model.Banheiro;
 import model.Corredor;
@@ -64,17 +60,14 @@ public class Jogo {
     private Ambiente ambienteAtual;
     private Random gerador;
     private int quantidadeTentativas;
-    private List<Ambiente> ambientes;
-    
+    private List<Ambiente> ambientes;    
     private final String[] direcoesSaidas = {"Escritorio", "Sala de Tv", "Jardim", "Sala de Jantar",
         "Cozinha", "Quarto 1", "Quarto 2", "Corredor", "Banheiro 1", "Quarto 4", "Quarto 3", "Banheiro 2" };
     /**
      * Durabilidade da chave mestra
      */
     private int durabilidade;
-    
     private int localizacaoChaveMestra;
-    
     private boolean temChaveMestra;
     /**
      * Dica de onde nao esta o tesouro
@@ -88,19 +81,15 @@ public class Jogo {
      * Localizacao do tesouro
      */
     private int localizacaoTesouro;
-    
     //Atributos de interface
     private JFrame fjanela;
     private JLabel lrotuloMap;
-    
     private JPanel ppainelInferior;
     private JPanel pcampoDeDigitacao;
     private JTextField tCampoDigitacao;
-
     private JPanel ppainelDir;
     private JLabel lquantidadeTentativas;
     private JLabel ldurabilidade;
-
     private JPanel ppainelEsq;
     private JPanel pstatusNormais;
     
@@ -193,19 +182,6 @@ public class Jogo {
     }
 
     /**
-     * Imprime a mensagem de abertura para o jogador.
-     */
-//    private void imprimirBoasVindas() {
-//        System.out.println();
-//        System.out.println("Bem-vindo ao A Casa Mal Assombrada!");
-//        System.out.println("A Casa Mal Assombrada eh um novo jogo de suspense.");
-//        System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
-//        System.out.println();
-//
-//        imprimirLocalizacaoAtual();
-//    }
- 
-    /**
      * Métoodo adaptado para interface gráfica
      * @return  a mensagem de abertura para o jogador.
      */
@@ -223,7 +199,6 @@ public class Jogo {
      * @return int que corresponde aos comandos do jogo.
      */
     private int processarComando(Comando comando) {
-
         if(comando.ehDesconhecido()) {
             JOptionPane.showMessageDialog(fjanela,"Eu nao entendi o que voce disse...");
             return 0;
@@ -254,16 +229,8 @@ public class Jogo {
     // Implementacoes dos comandos do usuario
 
     /**
-     * Printe informacoes de ajuda.
-     * Aqui nos imprimimos algo bobo e enigmatico e a lista de
-     * palavras de comando
+     * @return String informacoes de ajuda
      */
-    // private void imprimirAjuda() {
-    //     System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha pela casa");
-    //     System.out.println();
-    //     System.out.println("Suas palavras de comando sao:");
-    //     System.out.println(analisador.getComandos());
-    // }
     private String imprimirAjuda() {
 
         return "Voce esta perdido, sozinho e pela casa \n \n" +
@@ -271,14 +238,11 @@ public class Jogo {
     }
 
 
-
     /**
      * Tenta ir em uma direcao. Se existe uma saida entra no
      * novo ambiente, caso contrario imprime mensagem de erro.
      */
     private void irParaAmbiente(Comando comando) {
-        // gerarEstados();
-
         if(!comando.temSegundaPalavra()) {
             // se nao ha segunda palavra, nao sabemos pra onde ir...
             JOptionPane.showMessageDialog(fjanela, "Ir pra onde?");
@@ -343,7 +307,7 @@ public class Jogo {
     
     
     public void setVerificaNovasDicas() {
-         if ((ambienteAtual.getDica() != "") && (ambienteAtual.isDicaAcessada() == false)) {
+         if ((!"".equals(ambienteAtual.getDica())) && (ambienteAtual.isDicaAcessada() == false)) {
             JOptionPane.showMessageDialog(fjanela, "Você conseguiu uma dica");
             ambienteAtual.setDicaAcessada(true);
             
@@ -386,40 +350,11 @@ public class Jogo {
             return 1;  // sinaliza que nos queremos sair
         }
     }
-
-    /**
-     * Printa a localizacao atual
-     */
-//    public void imprimirLocalizacaoAtual() {
-//        
-//        System.out.println("Quantidade de Tentativas: " + quantidadeTentativas);
-//        System.out.println();
-//    
-//        if (temChaveMestra) {
-//            System.out.println("Duração da chave mestra: " + durabilidade);
-//            System.out.println();
-//        }
-//        System.out.print("Voce esta ");
-//        System.out.println(ambienteAtual);
-//        System.out.print("Saidas: " + ambienteAtual.getSaidas());
-//        System.out.println();
-//        
-//        
-//        if (ambienteAtual.getDica() != "")
-//            System.out.println(ambienteAtual.getDica());
-//        if (ambienteAtual.isChaveMestra() && temChaveMestra == false 
-//                && durabilidade > 0) {
-//            System.out.println("Você conseguiu uma chave mestra");
-//            temChaveMestra = true;
-//        }
-//        if (ambienteAtual.getDicaAlternativa() != "")
-//            System.out.println(ambienteAtual.getDicaAlternativa());
-//    }
     
     /**
-    *Método adaptado para interface gráfica;
-    *@return       
-    */
+     * Método adaptado para interface gráfica;
+     * @return String localizacao atual
+     */
     public String imprimirLocalizacaoAtual() {
         System.out.println("Onde você está : "  + ambienteAtual.getDescricao());
         String locAtual = "Voce esta: " + ambienteAtual.getDescricao() + "\n";
@@ -430,11 +365,12 @@ public class Jogo {
         }
         locAtual += "Saidas: " + temp + "\n";
         
-        return locAtual;
-                
+        return locAtual;          
     }
 
-    
+    /**
+     * @return String mensagem da area da esquerda da janela
+     */
     public String infoEsquerdaBar () {
         String mensagemEsq = "Número de \n" +
                 "Tentativas restantes: \n" +
@@ -449,6 +385,9 @@ public class Jogo {
         return mensagemEsq;
     }
     
+    /**
+     * @return String mensagem da area da direita da janela
+     */
     public String infoDireitaBar () {
         String mensageDir = "Dicas encontradas: \n";
         if (ambienteAtual.getDica() != "") {
@@ -472,53 +411,43 @@ public class Jogo {
     }
 
     /**
-     * Gera um numero aleatorio entre min e max
+     * @return int numero aleatorio
      */
     private int gerarAleatorio(int min, int max, Integer excessaoTesouro,
             Integer excessaoProx, Integer excessaNProx, Integer exNProx2) {
-//        System.out.println("Tesouro : " + excessaoTesouro + "\t" +
-//                "Prox: " + excessaoProx + "\t" + 
-//                        "NProx: " + excessaNProx + "\n");
         int numAle = (gerador.nextInt(max - min) + 1) + min;
-        //System.out.println("numAle : " + numAle + "\t");
         if (excessaoTesouro == null)
             return numAle;
         else {
             if (excessaoProx == null) {
-                //System.out.println("excessaoProx != null");
                 while (excessaoTesouro == numAle) {
                     numAle = (gerador.nextInt(max - min) + 1) + min;
-                    //System.out.print("numAleTes : " + numAle + "\t");
                 }
             } else if (excessaNProx == null) {
-                //System.out.println("excessaoNProx != null");
                 while ((excessaoTesouro == numAle) ||
                         (excessaoProx == numAle)) {
                     numAle = (gerador.nextInt(max - min) + 1) + min;
-                    //System.out.print("numAleProx : " + numAle + "\t");
                 }
             } else if (exNProx2 == null){
-                //System.out.println("excessaoProx != null && excessaoProx != null");
                 while ((excessaNProx == numAle) || (excessaoTesouro == numAle) 
                         || (excessaoProx == numAle)) {
-                    //System.out.print("numAleNProx : " + numAle + "\t");
                     numAle = (gerador.nextInt(max - min) + 1) + min;
                 }
             }  else {
-//                System.out.println("excessaoProx != null && excessaoProx != null"
-//                        + "&& exNProx2 != null");
                 while ((excessaNProx == numAle) || (excessaoTesouro == numAle) 
                         || (excessaoProx == numAle) || (exNProx2 == numAle)) {
-                    //System.out.print("numAleNProx : " + numAle + "\t");
                     numAle = (gerador.nextInt(max - min) + 1) + min;
                 }
             }
         }
-//        System.out.println();
-//        System.out.println("Dicas: " + ambientes.get(numAle).getDescricao());
         return numAle;
     }
     
+    /**
+     * Gera 
+     * @param saidas
+     * @return int numero 
+     */
     private int gerarAleatorioOndeEstaProx(int[] saidas) {
         boolean acertou = false;
         int numAle = (gerador.nextInt(11) + 1);
@@ -534,9 +463,10 @@ public class Jogo {
         return numAle;
     }
     
+    /**
+     * Ajusta os ambientes do jogo
+     */
     public void ajustarAmbientesDoJogo () {
-        //Ambiente <- DirecaoAmb(Key) & Amb(valor)
-        
         setSaidaDoAmbiente(0,1,1); // Escritorio <- 1 e salaTv
         
         setSaidaDoAmbiente(1,0,0); //Sala de TV <- 0 e Escritorio
@@ -572,13 +502,23 @@ public class Jogo {
         setSaidaDoAmbiente(10,11,11); //Quarto 3 <- 11 e Banheiro 2
         
         setSaidaDoAmbiente(11, 10, 10); //Banheiro 2 <- 10 e Quarto 3
-        
     }
     
+    /**
+     * Seta a saida do ambiente
+     * @param posAmb
+     * @param nomeAmb
+     * @param posAmbSaida 
+     */
     public void setSaidaDoAmbiente (int posAmb, int nomeAmb, int posAmbSaida) {
         ambientes.get(posAmb).ajustarSaidas(direcoesSaidas[nomeAmb], ambientes.get(posAmbSaida));
     }
     
+    /**
+     * Gera onde nao esta o tesouro
+     * @param locTesouro
+     * @param locDicaProx 
+     */
     public void geradorNaoEstaTesouro(int locTesouro, int locDicaProx) {
         naoEstaTesouro = new int[3];
         int ca;
@@ -618,6 +558,9 @@ public class Jogo {
         return ganhador;
     }
     
+    /**
+     * Chama o metodo que salva os dados em um arquivo texto
+     */
     public void salvarDados() {
         try {
             SistemaDeArquivoTxt.salvar(prepararDados());
@@ -626,6 +569,10 @@ public class Jogo {
         }
     }
     
+    /**
+     * Prepara os dados para serem salvos no arquivo texto
+     * @return String dados preparados
+     */
     public String prepararDados() {
         return "Localização do tesouro: " + ambientes.get(localizacaoTesouro).getDescricao() + "\n" +
                 "Dica1 -> Tesouro não está: " + ambientes.get(naoEstaTesouro[0]).getDescricao() + "\n" +
@@ -635,6 +582,9 @@ public class Jogo {
                 "Localização da chave Mestra: " +  ambientes.get(localizacaoChaveMestra).getDescricao() + "\n";
     }
 
+    /**
+     * Configura os ambientes
+     */
     private void configurarAmbientes() {
         ambientes.get(localizacaoTesouro).setTesouro();
         String nomeAmb;
@@ -665,13 +615,14 @@ public class Jogo {
     }
     
     
-    //////////Métodos de Interface
+    // #### Metodos de Interface ####
     
-    //Montagem da interface e inicando valores na interface
+    /**
+     * Monta a janela da interface e inicializa os valores da interface
+     */
     private void montarJanelaBorderLayout() {
         fjanela.setSize(800, 400);
         fjanela.setLayout(new BorderLayout());
-        
         
         //////Painel Direito
         ppainelDir = new JPanel();
@@ -745,7 +696,6 @@ public class Jogo {
         ppainelEsq.setLayout(new BoxLayout(ppainelEsq, BoxLayout.Y_AXIS));
         fjanela.add(ppainelEsq, BorderLayout.WEST);
         
-        
         ////////Painel Inferior
         ppainelInferior.setBackground(Color.WHITE);
         
@@ -789,9 +739,11 @@ public class Jogo {
         
     }
     
+    /**
+     * 
+     */
     public void locAtualDefault () {
         String[] locAtual = imprimirLocalizacaoAtual().split("\n");
-//        JPanel campo = (JPanel) ppainelInferior.getComponent(8);
         ppainelInferior.removeAll();
         ppainelInferior.add(new Label("\n"));
         for (String fraselocAtual : locAtual) {
@@ -803,10 +755,16 @@ public class Jogo {
         ppainelInferior.repaint();
     }
     
+    /**
+     * Metodo para exibir a janela
+     */
     public void exibir () {
         fjanela.setVisible(true);
     }
     
+    /**
+     * 
+     */
     private class OnEnter implements KeyListener {
         
         public OnEnter() {}
@@ -828,14 +786,12 @@ public class Jogo {
                 Comando comando;
                 
                 System.out.println(fraseDigitada);
-                //while (terminado < 1 && quantidadeTentativas > 0) {
                 comando = analisador.pegarComando(fraseDigitada);
                 
                 //Limpando o StringBuilder
                 tCampoDigitacao.setText("");
                 
                 terminado = processarComando(comando);
-                //}
                 if(terminado == 1) {
                     JOptionPane.showMessageDialog(fjanela,"Obrigado por jogar. Ate mais!");
                     fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));

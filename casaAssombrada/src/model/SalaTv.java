@@ -17,6 +17,10 @@ public class SalaTv extends Ambiente {
     private boolean tvPassandoFilmeTerror;
     private boolean sanguePelaSala;
 
+    /**
+     * Construtor da ambiente Sala de TV
+     * @param descricao 
+     */
     public SalaTv(String descricao) {
         super(descricao);
         tvQuebrada = new Random().nextBoolean();
@@ -24,6 +28,10 @@ public class SalaTv extends Ambiente {
         sanguePelaSala = new Random().nextBoolean();
     }
 
+    /**
+     * Metodo para retornar as informacoes do ambiente como uma String
+     * @return String informacoes do ambiente
+     */
     @Override
     public String toString() {
         String retorno = super.getDescricao() + '\n';

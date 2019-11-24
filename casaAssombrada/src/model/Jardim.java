@@ -15,12 +15,20 @@ public class Jardim extends Ambiente {
     private boolean covasAbertas;
     private boolean esqueletosEspalhados;
 
+    /**
+     * Construtor do ambiente Jardim
+     * @param descricao 
+     */
     public Jardim(String descricao) {
         super(descricao);
         covasAbertas = new Random().nextBoolean();
         esqueletosEspalhados = new Random().nextBoolean();
     }
     
+    /**
+     * Metodo para retornar as informacoes do ambiente como uma String
+     * @return String informacoes do ambiente
+     */
     @Override
     public String toString() {
         String retorno = super.getDescricao() + '\n';

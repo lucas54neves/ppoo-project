@@ -15,12 +15,20 @@ public class Quarto extends Ambiente {
     private boolean corposNaCama;
     private boolean sanguePeloQuarto;
 
+    /**
+     * Construtor do ambiente Quarto
+     * @param descricao
+     */
     public Quarto(String descricao) {
         super(descricao);
         corposNaCama = new Random().nextBoolean();
         sanguePeloQuarto = new Random().nextBoolean();
     }
     
+    /**
+     * Metodo para retornar as informacoes do ambiente como uma String
+     * @return String informacoes do ambiente
+     */
     @Override
     public String toString() {
         String retorno = super.getDescricao() + '\n';

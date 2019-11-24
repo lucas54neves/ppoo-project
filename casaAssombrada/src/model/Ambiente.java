@@ -13,8 +13,6 @@
  */
 package model;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Ambiente {
@@ -65,12 +63,6 @@ public abstract class Ambiente {
      */
     public Ambiente getAmbiente(String saida) {
         try {
-//            System.out.println("saida : " + saida);
-//            for (String k : saidas.keySet()) {
-//                System.out.println("KEY : " + k);
-//                System.out.println("Equals : " + k.equals(saida));
-//            }
-            //System.out.println("Contains : "  + saidas.containsKey(saida.trim()));
             return saidas.get(saida).getDestino();
         } catch (Exception e) {
             return null;
@@ -90,6 +82,11 @@ public abstract class Ambiente {
         return retorno;
     }
 
+    /**
+     * Retorna a saida do ambiente
+     * @param nome
+     * @return Porta
+     */
     public Porta getSaida(String nome) {
         try {
             System.out.println(saidas);
@@ -114,36 +111,64 @@ public abstract class Ambiente {
         }
     }
 
-    
-    
+    /**
+     * Seta se tem dica no ambiente
+     * @param dica 
+     */
     public void setDica(String dica) {
         this.dica = dica;
     }
 
+    /**
+     * Seta se existe chave mestra no ambiente
+     */
     public void setChaveMestra() {
         this.chaveMestra = true;
     }
 
+    /**
+     * Seta se existe o tesouro no ambiente
+     */
     public void setTesouro() {
         this.tesouro = true;
     }
 
+    /**
+     * Retorna dica
+     * @return String dica
+     */
     public String getDica() {
         return dica;
     }
 
+    /**
+     * Retorna se tem chave mestra no ambiente
+     * @return boolean
+     */
     public boolean isChaveMestra() {
         return chaveMestra;
     }
-
+    
+    /**
+     * Retorna se tem tesouro no ambiente
+     * @return boolean tesouro no ambiente
+     */
     public boolean isTesouro() {
         return tesouro;
     }
 
+    /**
+     * Seta se a dica foi acessada
+     * @param dicaAcessada 
+     */
     public void setDicaAcessada(boolean dicaAcessada) {
         this.dicaAcessada = dicaAcessada;
     }
 
+    /**
+     * Retorna se a dica foi acessada
+     * @return boolean dica acessada
+     */
     public boolean isDicaAcessada() {
         return dicaAcessada;
     }

@@ -17,6 +17,10 @@ public class Banheiro extends Ambiente {
     private boolean banheiroSujo;
     private boolean sangueNosEspelhos;
 
+    /**
+     * Construtor do Banheiro
+     * @param descricao 
+     */
     public Banheiro(String descricao) {
         super(descricao);
         vasoQuebrado = new Random().nextBoolean();
@@ -24,6 +28,10 @@ public class Banheiro extends Ambiente {
         sangueNosEspelhos = new Random().nextBoolean();
     }
     
+    /**
+     * Metodo para retornar as informacoes do ambiente como uma String
+     * @return String informacoes do ambiente
+     */
     @Override
     public String toString() {
         String retorno = super.getDescricao() + '\n';

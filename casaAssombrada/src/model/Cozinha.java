@@ -18,6 +18,10 @@ public class Cozinha extends Ambiente {
     private boolean sanguePelaCozinha;
     private boolean corposEspalhados;
 
+    /**
+     * Construtor do ambiente Cozinha
+     * @param descricao 
+     */
     public Cozinha(String descricao) {
         super(descricao);
         armariosAbertos = new Random().nextBoolean();
@@ -26,6 +30,10 @@ public class Cozinha extends Ambiente {
         corposEspalhados = new Random().nextBoolean();
     }
     
+    /**
+     * Metodo para retornar as informacoes do ambiente como uma String
+     * @return String informacoes do ambiente
+     */
     @Override
     public String toString() {
         String retorno = super.getDescricao() + '\n';
