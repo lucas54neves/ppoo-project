@@ -322,10 +322,11 @@ public class Jogo {
     }
     
     public void andarComtentativasNormais(Ambiente proximoAmbiente, String direcao) {
+            
             if (proximoAmbiente == null) {
                 JOptionPane.showMessageDialog(fjanela, "Nao ha passagem! \n");
                 imprimirLocalizacaoAtual();
-            } else if (proximoAmbiente.getEstado(direcao)) {
+            } else if (ambienteAtual.getEstado(direcao)) {
                 // Entra nesse if se a porta nao estiver emperrada
                 ambienteAtual = proximoAmbiente;
                 setVerificaNovasDicas();

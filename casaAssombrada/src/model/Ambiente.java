@@ -92,6 +92,7 @@ public abstract class Ambiente {
 
     public Porta getSaida(String nome) {
         try {
+            System.out.println(saidas);
             return saidas.get(nome);
         } catch (Exception e) {
             return null;
@@ -104,14 +105,17 @@ public abstract class Ambiente {
      */
     public boolean getEstado(String nome) {
         Porta porta = getSaida(nome);
-  //      System.out.println("NOME ESTADO: " + porta);
         if (porta != null) {
+            System.out.println("oi");
+            porta.setEstado();
             return porta.getEstado();
         } else {
             return false;
         }
     }
 
+    
+    
     public void setDica(String dica) {
         this.dica = dica;
     }

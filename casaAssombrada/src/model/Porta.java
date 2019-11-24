@@ -33,10 +33,14 @@ public class Porta {
         return nome;
     }
 
+    public void setEstado() {
+        this.estado = new Random().nextBoolean();
+    }
+    
     public boolean getEstado() {
 //        gerarAleatorio();
         //System.out.println("est: " + estado);
-        gerarAleatorio();
+        
         //System.out.println("ESTADO: " + estado);
         return estado;
     }
@@ -46,6 +50,8 @@ public class Porta {
     }
 
     public void gerarAleatorio() {
+        System.out.println("Estou aqui");
         estado = new Random().nextBoolean();
+        System.out.println(estado);
     }
 }
