@@ -769,21 +769,18 @@ public class Jogo {
         
         public OnEnter() {}
         
+        @Override
+        public void keyTyped(KeyEvent e) {}
+
         /**
-         * Analise a primeira palavra e garante que ela comeca com letra maiuscula
+         * Realiza operacoes de acordo com a tecla pressionada
          * @param e 
          */
         @Override
-        public void keyTyped(KeyEvent e) {
-            String fraseOriginal = tCampoDigitacao.getText();
-            String fraseCorrigida = fraseOriginal.substring(0,1).toUpperCase() + fraseOriginal.substring(1);
-            tCampoDigitacao.setText(fraseCorrigida);
-        }
-
-        @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                
+                mudarIniciais();
+               
                 String fraseDigitada = tCampoDigitacao.getText();
   
                 int terminado = 0;
@@ -810,22 +807,35 @@ public class Jogo {
                     JOptionPane.showMessageDialog(fjanela,"GAME OVER! Voce gastou sua carga explosiva e nao encontrou o tesouro.");
                     fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
                 }
-            
-                
+            } else if (e.getKeyCode() == KeyEvent.VK_TAB) {
+                /* Implemente aqui o autocomplete de palavra a partir quando 
+                    apertar TAB.
+                */
             }
             
         }
 
         @Override
-        public void keyReleased(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_TAB) {
-                System.out.println("AQUI" + tCampoDigitacao.getText());
+        public void keyReleased(KeyEvent e) {}
+        
+        /**
+         * Altera para maiusculas as letras iniciais das duas primeiras palavras
+         * digitadas pelo usuario
+         */
+        public void mudarIniciais() {
+            String[] fraseSeparada = tCampoDigitacao.getText().split(" ");
                 
-                /* Implemente aqui o autocomplete de palavra a partir quando 
-                    apertar TAB.
-                */
+                fraseSeparada[0] = fraseSeparada[0].substring(0,1).toUpperCase() + fraseSeparada[0].substring(1);
+                if (fraseSeparada.length > 1) {
+                    fraseSeparada[1] = fraseSeparada[1].substring(0,1).toUpperCase() + fraseSeparada[1].substring(1);
+                }
                 
-            }
+                String frase = "";
+                for (String palavra : fraseSeparada) {
+                    frase += palavra + " ";
+                }
+                
+                tCampoDigitacao.setText(frase);
         }
        
     }
