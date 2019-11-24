@@ -769,11 +769,15 @@ public class Jogo {
         
         public OnEnter() {}
         
+        /**
+         * Analise a primeira palavra e garante que ela comeca com letra maiuscula
+         * @param e 
+         */
         @Override
         public void keyTyped(KeyEvent e) {
-             /* Implemente aqui o analise se a primeira palavra é
-                minúscula substituir por maiúscula para evitar erros.
-                */
+            String fraseOriginal = tCampoDigitacao.getText();
+            String fraseCorrigida = fraseOriginal.substring(0,1).toUpperCase() + fraseOriginal.substring(1);
+            tCampoDigitacao.setText(fraseCorrigida);
         }
 
         @Override
@@ -820,6 +824,7 @@ public class Jogo {
                 /* Implemente aqui o autocomplete de palavra a partir quando 
                     apertar TAB.
                 */
+                
             }
         }
        
