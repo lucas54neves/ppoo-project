@@ -44,8 +44,8 @@ public abstract class Ambiente {
      * @param saida saida do ambiente
      * @param ambiente ambiente
      */
-    public void ajustarSaidas(String saida, Ambiente ambiente) {
-        Porta porta = new Porta(saida, ambiente);
+    public void ajustarSaidas(String saida, Ambiente ambiente, int dificuldade) {
+        Porta porta = new Porta(saida, ambiente, dificuldade);
         porta.gerarAleatorio();
         saidas.put(saida, porta);
     }
@@ -103,7 +103,6 @@ public abstract class Ambiente {
     public boolean getEstado(String nome) {
         Porta porta = getSaida(nome);
         if (porta != null) {
-            System.out.println("oi");
             porta.setEstado();
             return porta.getEstado();
         } else {

@@ -38,14 +38,21 @@ import controller.Comando;
 import controller.PalavrasComando;
 import controller.SistemaDeArquivoTxt;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import model.Banheiro;
 import model.Corredor;
 import model.Cozinha;
@@ -67,6 +74,7 @@ public class Jogo {
      * Durabilidade da chave mestra
      */
     private int durabilidade;
+    private int dificuldade;
     private int localizacaoChaveMestra;
     private boolean temChaveMestra;
     /**
@@ -108,14 +116,14 @@ public class Jogo {
         ambientes = new ArrayList<Ambiente>();
         gerador = new Random();
         criarAmbientes();
-        iniciarAmbientes();
+        
+        iniciarAmbientes(dificuldade);
         analisador = new Analisador();
         temChaveMestra = false;
         quantidadeTentativas = gerarAleatorio(20, 50, null, null, null, null);
         durabilidade = gerarAleatorio(1, 12, null, null, null, null);
         localizacaoTesouro = gerarAleatorio(0, 11, null, null, null, null);
-        //localizacaoChaveMestra = gerarAleatorio(0, 11, null, null, null, null);
-        localizacaoChaveMestra = 1; //Teste
+        localizacaoChaveMestra = gerarAleatorio(0, 11, null, null, null, null);
         proximoTesouro = gerarOndeTesouroEstaProx(localizacaoTesouro);
         geradorNaoEstaTesouro(localizacaoTesouro, proximoTesouro);  
         configurarAmbientes();
@@ -132,6 +140,14 @@ public class Jogo {
         pstatusNormais = new JPanel();
         
         montarJanelaBorderLayout();
+        gerarDificuldade();
+    }
+    
+    public void gerarDificuldade() {
+        UIManager.put("OptionPane.cancelButtonText", "Difícil");
+        UIManager.put("OptionPane.noButtonText", "Moderado");
+        UIManager.put("OptionPane.yesButtonText", "Fácil");
+        dificuldade = JOptionPane.showConfirmDialog(null, "Qual dificuldade desejada?");
     }
 
     /**
@@ -167,9 +183,9 @@ public class Jogo {
         
     }
 
-    private void iniciarAmbientes () {
+    private void iniciarAmbientes (int dificuldade) {
         // inicializa as saidas dos ambientes
-        ajustarAmbientesDoJogo();
+        ajustarAmbientesDoJogo(dificuldade);
         ambienteAtual = ambientes.get(1);  // o jogo comeca na sala de tv
     }
 
@@ -264,8 +280,7 @@ public class Jogo {
                 if (proximoAmbiente == null) {
                     JOptionPane.showMessageDialog(fjanela, "Nao ha passagem! \n ");
                     locAtualDefault();
-                } else {
-                    System.out.println("AQUI !!!");
+                } else {;
                     ambienteAtual = proximoAmbiente;
                     setVerificaNovasDicas();
                     locAtualDefault();
@@ -466,42 +481,42 @@ public class Jogo {
     /**
      * Ajusta os ambientes do jogo
      */
-    public void ajustarAmbientesDoJogo () {
-        setSaidaDoAmbiente(0,1,1); // Escritorio <- 1 e salaTv
+    public void ajustarAmbientesDoJogo (int dificuldade) {
+        setSaidaDoAmbiente(0,1,1,dificuldade); // Escritorio <- 1 e salaTv
         
-        setSaidaDoAmbiente(1,0,0); //Sala de TV <- 0 e Escritorio
-        setSaidaDoAmbiente(1,3,3); //Sala de TV <- 3 e Sala de Jantar
-        setSaidaDoAmbiente(1,2,2); //Sala de TV <- 2 e Jardim
+        setSaidaDoAmbiente(1,0,0,dificuldade); //Sala de TV <- 0 e Escritorio
+        setSaidaDoAmbiente(1,3,3,dificuldade); //Sala de TV <- 3 e Sala de Jantar
+        setSaidaDoAmbiente(1,2,2,dificuldade); //Sala de TV <- 2 e Jardim
         
-        setSaidaDoAmbiente(2,1,1); //Jardim <- 1 e salaTV
-        setSaidaDoAmbiente(2,4,4); //Jardim <- 4 cozinha
+        setSaidaDoAmbiente(2,1,1,dificuldade); //Jardim <- 1 e salaTV
+        setSaidaDoAmbiente(2,4,4,dificuldade); //Jardim <- 4 cozinha
         
-        setSaidaDoAmbiente(3,1,1); //Sala de Jantar <- 1 e salaTv
-        setSaidaDoAmbiente(3,4,4); //Sala de Jantar <- 4 e cozinha
-        setSaidaDoAmbiente(3,7,7); //Sala de Jantar <- 7 e corredor
+        setSaidaDoAmbiente(3,1,1,dificuldade); //Sala de Jantar <- 1 e salaTv
+        setSaidaDoAmbiente(3,4,4,dificuldade); //Sala de Jantar <- 4 e cozinha
+        setSaidaDoAmbiente(3,7,7,dificuldade); //Sala de Jantar <- 7 e corredor
         
-        setSaidaDoAmbiente(4,3,3); //Cozinha <- 3 e sala de Jantar
-        setSaidaDoAmbiente(4,2,2); //Cozinha <- 2 e jardim
+        setSaidaDoAmbiente(4,3,3,dificuldade); //Cozinha <- 3 e sala de Jantar
+        setSaidaDoAmbiente(4,2,2,dificuldade); //Cozinha <- 2 e jardim
         
-        setSaidaDoAmbiente(5,7,7); //Quarto 1 <- 7 e Corredor
+        setSaidaDoAmbiente(5,7,7,dificuldade); //Quarto 1 <- 7 e Corredor
         
-        setSaidaDoAmbiente(6,7,7); //Quarto 2 <- 7 e Corredor
+        setSaidaDoAmbiente(6,7,7,dificuldade); //Quarto 2 <- 7 e Corredor
         
-        setSaidaDoAmbiente(7,3,3); //Corredor <- 3 e sala de jantar
-        setSaidaDoAmbiente(7,5,5); //Corredor <- 1 e Quarto 1 
-        setSaidaDoAmbiente(7,6,6); //Corredor <- 6 e Quarto 2
-        setSaidaDoAmbiente(7,10,10); //Corredor <- 10 e Quarto 3
-        setSaidaDoAmbiente(7,9,9); //Corredor <- 9 e Quarto 4
-        setSaidaDoAmbiente(7,8,8); //Corredor <- 8 e Banheiro 1
+        setSaidaDoAmbiente(7,3,3,dificuldade); //Corredor <- 3 e sala de jantar
+        setSaidaDoAmbiente(7,5,5,dificuldade); //Corredor <- 1 e Quarto 1 
+        setSaidaDoAmbiente(7,6,6,dificuldade); //Corredor <- 6 e Quarto 2
+        setSaidaDoAmbiente(7,10,10,dificuldade); //Corredor <- 10 e Quarto 3
+        setSaidaDoAmbiente(7,9,9,dificuldade); //Corredor <- 9 e Quarto 4
+        setSaidaDoAmbiente(7,8,8,dificuldade); //Corredor <- 8 e Banheiro 1
         
-        setSaidaDoAmbiente(8,7,7); //Banheiro 1 <- 7 e Corredor
+        setSaidaDoAmbiente(8,7,7,dificuldade); //Banheiro 1 <- 7 e Corredor
         
-        setSaidaDoAmbiente(9,7,7); //Quarto 4 <- 7 e Corredor
+        setSaidaDoAmbiente(9,7,7,dificuldade); //Quarto 4 <- 7 e Corredor
         
-        setSaidaDoAmbiente(10,7,7); //Quarto 3 <- 7 e Corredor 
-        setSaidaDoAmbiente(10,11,11); //Quarto 3 <- 11 e Banheiro 2
+        setSaidaDoAmbiente(10,7,7,dificuldade); //Quarto 3 <- 7 e Corredor 
+        setSaidaDoAmbiente(10,11,11,dificuldade); //Quarto 3 <- 11 e Banheiro 2
         
-        setSaidaDoAmbiente(11, 10, 10); //Banheiro 2 <- 10 e Quarto 3
+        setSaidaDoAmbiente(11,10,10,dificuldade); //Banheiro 2 <- 10 e Quarto 3
     }
     
     /**
@@ -510,8 +525,8 @@ public class Jogo {
      * @param nomeAmb
      * @param posAmbSaida 
      */
-    public void setSaidaDoAmbiente (int posAmb, int nomeAmb, int posAmbSaida) {
-        ambientes.get(posAmb).ajustarSaidas(direcoesSaidas[nomeAmb], ambientes.get(posAmbSaida));
+    public void setSaidaDoAmbiente (int posAmb, int nomeAmb, int posAmbSaida, int dificuldade) {
+        ambientes.get(posAmb).ajustarSaidas(direcoesSaidas[nomeAmb], ambientes.get(posAmbSaida), dificuldade);
     }
     
     /**

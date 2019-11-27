@@ -22,16 +22,18 @@ public class Porta {
     private final String nome;
     private final Ambiente destino;
     private boolean estado;
+    private int dificuldade;
 
     /**
      * Construtor da Porta
      * @param nome
      * @param destino 
      */
-    public Porta(String nome, Ambiente destino) {
+    public Porta(String nome, Ambiente destino, int dificuldade) {
         this.nome = nome;
         this.destino = destino;
         estado = false;
+        this.dificuldade = dificuldade;
     }
 
     /**
@@ -43,10 +45,32 @@ public class Porta {
     }
 
     /**
-     * Seta o estado da porta
+     * Atribui um estado para a porta de acordo com a dificuldade
+     * Se a dificuldade for 'difícil', a probalibidade de a porta nao estar
+     * emperrada e de 50%. Se a dificuldade for 'moderada', a probabilidade
+     * e de 75%. Se for dificuldade 'fácil', a probabilidade e de 90%.
      */
     public void setEstado() {
-        this.estado = new Random().nextBoolean();
+        double estatistica = Math.random();
+        if (dificuldade == 0) {
+            if (estatistica <= 0.5) {
+                    estado = true;
+                } else {
+                    estado = false;
+                }
+        } else if (dificuldade == 1) {
+             if (estatistica <= 0.75) {
+                    estado = true;
+                } else {
+                    estado = false;
+                }
+        } else if (dificuldade == 2) {
+            if (estatistica <= 0.9) {
+                    estado = true;
+                } else {
+                    estado = false;
+                }
+        }
     }
     
     /**
@@ -67,8 +91,9 @@ public class Porta {
 
     /**
      * Gera um estado aletatorio para a porta
+     * true nao emperrada
      */
     public void gerarAleatorio() {
-        estado = new Random().nextBoolean();
+        setEstado();
     }
 }
