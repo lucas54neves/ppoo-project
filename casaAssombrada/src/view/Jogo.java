@@ -100,6 +100,7 @@ public class Jogo {
     private JLabel ldurabilidade;
     private JPanel ppainelEsq;
     private JPanel pstatusNormais;
+    private JPanel pstatusChaveMestra; // Status Chave Mestra do ppainelEsq
     
     private static Jogo instance;
 
@@ -136,14 +137,17 @@ public class Jogo {
         tCampoDigitacao = new JTextField();
         tCampoDigitacao.addKeyListener(new OnEnter());
         
+        ppainelEsq = new JPanel();
+        ppainelDir = new JPanel();
         ppainelInferior = new JPanel();
         pstatusNormais = new JPanel();
+        pstatusChaveMestra = new JPanel();
         
         montarJanelaBorderLayout();
         gerarDificuldade();
     }
     
-    public void gerarDificuldade() {
+    private void gerarDificuldade() {
         UIManager.put("OptionPane.cancelButtonText", "Difícil");
         UIManager.put("OptionPane.noButtonText", "Moderado");
         UIManager.put("OptionPane.yesButtonText", "Fácil");
@@ -300,7 +304,7 @@ public class Jogo {
         }
     }
     
-    public void andarComtentativasNormais(Ambiente proximoAmbiente, String direcao) {
+    private void andarComtentativasNormais(Ambiente proximoAmbiente, String direcao) {
             
             if (proximoAmbiente == null) {
                 JOptionPane.showMessageDialog(fjanela, "Nao ha passagem! \n");
@@ -321,7 +325,7 @@ public class Jogo {
     }
     
     
-    public void setVerificaNovasDicas() {
+    private void setVerificaNovasDicas() {
          if ((!"".equals(ambienteAtual.getDica())) && (ambienteAtual.isDicaAcessada() == false)) {
             JOptionPane.showMessageDialog(fjanela, "Você conseguiu uma dica");
             ambienteAtual.setDicaAcessada(true);
@@ -332,6 +336,8 @@ public class Jogo {
                 && durabilidade > 0) {
             JOptionPane.showMessageDialog(fjanela, "Você conseguiu uma chave mestra");
             temChaveMestra = true;
+            
+            setPainelEsqComChaveMestra();
         }
     }
     
@@ -349,6 +355,33 @@ public class Jogo {
         ppainelDir.add(new JLabel("\n"));
         ppainelDir.add(new JLabel("\n"));
         ppainelDir.repaint(); //Método importante para refresh no painel direito.
+    }
+    
+    private void setPainelEsqComChaveMestra () {
+        
+            String[] infoEsq = chaveInfo().split("\n");
+            JLabel configTemp;
+            
+            configTemp =  new JLabel(infoEsq[0]);
+            configTemp.setFont(new Font("Arial", Font.BOLD, 20));
+            pstatusChaveMestra.add(configTemp); //Durabilidade da chave
+            
+            //ppainelEsq.add(configTemp); 
+        
+            configTemp =  new JLabel(infoEsq[1]);
+            configTemp.setFont(new Font("Arial", Font.BOLD, 20));
+            pstatusChaveMestra.add(configTemp); // mestra
+            
+            //ppainelEsq.add(configTemp); // mestra
+            
+            ldurabilidade = new JLabel(infoEsq[2]);
+            ldurabilidade.setFont(new Font("Arial", Font.ROMAN_BASELINE, 20));
+            pstatusChaveMestra.add(ldurabilidade);//display durabilidade
+            
+            pstatusChaveMestra.setBackground(Color.WHITE);
+            pstatusChaveMestra.setLayout(new BoxLayout(pstatusChaveMestra, BoxLayout.Y_AXIS) );
+            //ppainelEsq.add(ldurabilidade);//display durabilidade
+            ppainelEsq.repaint();
     }
 
     /**
@@ -370,7 +403,7 @@ public class Jogo {
      * Método adaptado para interface gráfica;
      * @return String localizacao atual
      */
-    public String imprimirLocalizacaoAtual() {
+    private String imprimirLocalizacaoAtual() {
         System.out.println("Onde você está : "  + ambienteAtual.getDescricao());
         String locAtual = "Voce esta: " + ambienteAtual.getDescricao() + "\n";
         String[] tempSplit = ambienteAtual.getSaidas().split("\t");
@@ -386,24 +419,29 @@ public class Jogo {
     /**
      * @return String mensagem da area da esquerda da janela
      */
-    public String infoEsquerdaBar () {
+    private String infoEsquerdaBar () {
         String mensagemEsq = "Número de \n" +
                 "Tentativas restantes: \n" +
                 quantidadeTentativas + "\n";
+        
+        return mensagemEsq;
+    }
     
+    private String chaveInfo () {
+        String mensagemEsq = "";
         if (temChaveMestra) {
             mensagemEsq += "Durabilidade da chave \n" 
                     + "mestra: \n"
                     + durabilidade;
         }
-        
         return mensagemEsq;
     }
+    
     
     /**
      * @return String mensagem da area da direita da janela
      */
-    public String infoDireitaBar () {
+    private String infoDireitaBar () {
         String mensageDir = "Dicas encontradas: \n";
         if (ambienteAtual.getDica() != "") {
             JOptionPane.showMessageDialog(fjanela, "Você conseguiu uma dica");
@@ -413,6 +451,8 @@ public class Jogo {
                 && durabilidade > 0) {
             JOptionPane.showMessageDialog(fjanela, "Você conseguiu uma chave mestra");
             temChaveMestra = true;
+            
+            setPainelEsqComChaveMestra();
         }
 
         return mensageDir;
@@ -481,7 +521,7 @@ public class Jogo {
     /**
      * Ajusta os ambientes do jogo
      */
-    public void ajustarAmbientesDoJogo (int dificuldade) {
+    private void ajustarAmbientesDoJogo (int dificuldade) {
         setSaidaDoAmbiente(0,1,1,dificuldade); // Escritorio <- 1 e salaTv
         
         setSaidaDoAmbiente(1,0,0,dificuldade); //Sala de TV <- 0 e Escritorio
@@ -525,7 +565,7 @@ public class Jogo {
      * @param nomeAmb
      * @param posAmbSaida 
      */
-    public void setSaidaDoAmbiente (int posAmb, int nomeAmb, int posAmbSaida, int dificuldade) {
+    private void setSaidaDoAmbiente (int posAmb, int nomeAmb, int posAmbSaida, int dificuldade) {
         ambientes.get(posAmb).ajustarSaidas(direcoesSaidas[nomeAmb], ambientes.get(posAmbSaida), dificuldade);
     }
     
@@ -534,7 +574,7 @@ public class Jogo {
      * @param locTesouro
      * @param locDicaProx 
      */
-    public void geradorNaoEstaTesouro(int locTesouro, int locDicaProx) {
+    private void geradorNaoEstaTesouro(int locTesouro, int locDicaProx) {
         naoEstaTesouro = new int[3];
         int ca;
         Integer nProx = null;
@@ -554,7 +594,7 @@ public class Jogo {
      * @param locTesouro
      * @return numero do ambinte que o tesouro está próximo
      */
-    public int gerarOndeTesouroEstaProx (int locTesouro) {
+    private int gerarOndeTesouroEstaProx (int locTesouro) {
         String[] keySaidas = ambientes.get(locTesouro).getSaidas().split("\t");
         List<Ambiente> listAmb = new ArrayList<>();
         for (String key : keySaidas) {
@@ -576,7 +616,7 @@ public class Jogo {
     /**
      * Chama o metodo que salva os dados em um arquivo texto
      */
-    public void salvarDados() {
+    private void salvarDados() {
         try {
             SistemaDeArquivoTxt.salvar(prepararDados());
         } catch (IOException e) {
@@ -588,7 +628,7 @@ public class Jogo {
      * Prepara os dados para serem salvos no arquivo texto
      * @return String dados preparados
      */
-    public String prepararDados() {
+    private String prepararDados() {
         return "Localização do tesouro: " + ambientes.get(localizacaoTesouro).getDescricao() + "\n" +
                 "Dica1 -> Tesouro não está: " + ambientes.get(naoEstaTesouro[0]).getDescricao() + "\n" +
                 "Dica2 -> Tesouro não está: " + ambientes.get(naoEstaTesouro[1]).getDescricao() + "\n" +
@@ -638,11 +678,64 @@ public class Jogo {
     private void montarJanelaBorderLayout() {
         fjanela.setSize(800, 400);
         fjanela.setLayout(new BorderLayout());
+   
+        montagemPainelEsquerdo();
+ 
+        montagemPainelDireito();
         
-        //////Painel Direito
-        ppainelDir = new JPanel();
+//        if (temChaveMestra) {
+//           setPainelEsqComChaveMestra();
+//        }
+        
+        montagemPainelInferior();
+        
+        //////Painel Centro
+        JPanel painelCentro = new JPanel();
+        painelCentro.setBackground(Color.WHITE);
+        painelCentro.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
+        painelCentro.setSize(100, 50);
+        painelCentro.setLayout(new GridLayout());
+        painelCentro.add(lrotuloMap);
+        fjanela.add(painelCentro,( BorderLayout.CENTER));
+        
+        fjanela.pack();
+        
+    }
+    
+    private void montagemPainelEsquerdo() {
+        String[] infoEsq = infoEsquerdaBar().split("\n");
+        JLabel configTemp = new JLabel(infoEsq[0]);
+        configTemp.setFont(new Font("Arial", Font.BOLD, 20));
+        pstatusNormais.add(configTemp); // "Número de"
+        
+        configTemp = new JLabel(infoEsq[1]);
+        configTemp.setFont(new Font("Arial", Font.BOLD, 20));
+        pstatusNormais.add(configTemp); // "Tentativas Restantes"
+        pstatusNormais.add( new JLabel("\n"));
+        
+        lquantidadeTentativas = new JLabel(infoEsq[2]); //Definido as tentativas
+        lquantidadeTentativas.setFont(new Font("Arial", Font.ROMAN_BASELINE, 20));
+        pstatusNormais.add(lquantidadeTentativas);
+        pstatusNormais.add( new JLabel("\n"));
+        pstatusNormais.add( new JLabel("\n"));
+        
+        pstatusNormais.setBackground(Color.WHITE);
+        pstatusNormais.setLayout(new BoxLayout(pstatusNormais, BoxLayout.Y_AXIS) );
+        
+        ppainelEsq.add(pstatusNormais);
+        
+        ppainelEsq.add(pstatusChaveMestra);
+        
+        ppainelEsq.setBackground(Color.WHITE);
+        ppainelEsq.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
+        ppainelEsq.setSize(new Dimension(200, 50));
+        ppainelEsq.setLayout(new BoxLayout(ppainelEsq, BoxLayout.Y_AXIS));
+        fjanela.add(ppainelEsq, BorderLayout.WEST);
+    }
+    
+    private void montagemPainelDireito () {
+         //////Painel Direito        
         ppainelDir.setBackground(Color.WHITE);
-        
         String[] infoDir = infoDireitaBar().split("\n");
         JLabel frase1 = new JLabel(infoDir[0]);
         ppainelDir.add(frase1);
@@ -665,52 +758,10 @@ public class Jogo {
         scrollbar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         
         fjanela.add(scrollbar, BorderLayout.EAST);
-        
-        //////Painel Esquerdo
-        ppainelEsq = new JPanel();
-        
-        String[] infoEsq = infoEsquerdaBar().split("\n");
-        JLabel configTemp = new JLabel(infoEsq[0]);
-        configTemp.setFont(new Font("Arial", Font.BOLD, 20));
-        pstatusNormais.add(configTemp); // "Número de"
-        
-        configTemp = new JLabel(infoEsq[1]);
-        configTemp.setFont(new Font("Arial", Font.BOLD, 20));
-        pstatusNormais.add(configTemp); // "Tentativas Restantes"
-        pstatusNormais.add( new JLabel("\n"));
-        
-        lquantidadeTentativas = new JLabel(infoEsq[2]); //Definido as tentativas
-        lquantidadeTentativas.setFont(new Font("Arial", Font.ROMAN_BASELINE, 20));
-        pstatusNormais.add(lquantidadeTentativas);
-        pstatusNormais.add( new JLabel("\n"));
-        pstatusNormais.add( new JLabel("\n"));
-        
-        pstatusNormais.setBackground(Color.WHITE);
-        pstatusNormais.setLayout(new BoxLayout(pstatusNormais, BoxLayout.Y_AXIS) );
-        
-        ppainelEsq.add(pstatusNormais);
-        
-        if (infoEsq.length > 3) {
-            configTemp =  new JLabel(infoEsq[3]);
-            configTemp.setFont(new Font("Arial", Font.BOLD, 20));
-            ppainelEsq.add(configTemp); //Durabilidade da chave
-        
-            configTemp =  new JLabel(infoEsq[4]);
-            configTemp.setFont(new Font("Arial", Font.BOLD, 20));
-            ppainelEsq.add(configTemp); // mestra
-            
-            ldurabilidade = new JLabel(infoEsq[5]);
-            ldurabilidade.setFont(new Font("Arial", Font.ROMAN_BASELINE, 20));
-            ppainelEsq.add(ldurabilidade);//display durabilidade
+    }
+    
+    private void montagemPainelInferior() {
 
-        }
-        
-        ppainelEsq.setBackground(Color.WHITE);
-        ppainelEsq.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
-        ppainelEsq.setSize(new Dimension(200, 50));
-        ppainelEsq.setLayout(new BoxLayout(ppainelEsq, BoxLayout.Y_AXIS));
-        fjanela.add(ppainelEsq, BorderLayout.WEST);
-        
         ////////Painel Inferior
         ppainelInferior.setBackground(Color.WHITE);
         
@@ -740,24 +791,13 @@ public class Jogo {
         ppainelInferior.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
         ppainelInferior.setLayout(new BoxLayout(ppainelInferior, BoxLayout.Y_AXIS));
         fjanela.add(ppainelInferior, BorderLayout.SOUTH);
-        
-        //////Painel Centro
-        JPanel painelCentro = new JPanel();
-        painelCentro.setBackground(Color.WHITE);
-        painelCentro.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
-        painelCentro.setSize(100, 50);
-        painelCentro.setLayout(new GridLayout());
-        painelCentro.add(lrotuloMap);
-        fjanela.add(painelCentro,( BorderLayout.CENTER));
-        
-        fjanela.pack();
-        
     }
+    
     
     /**
      * 
      */
-    public void locAtualDefault () {
+    private void locAtualDefault () {
         String[] locAtual = imprimirLocalizacaoAtual().split("\n");
         ppainelInferior.removeAll();
         ppainelInferior.add(new Label("\n"));
@@ -773,7 +813,7 @@ public class Jogo {
     /**
      * Metodo para exibir a janela
      */
-    public void exibir () {
+    private void exibir () {
         fjanela.setVisible(true);
     }
     
