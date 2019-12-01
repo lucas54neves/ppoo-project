@@ -38,20 +38,25 @@ import controller.Comando;
 import controller.PalavrasComando;
 import controller.SistemaDeArquivoTxt;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Label;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JDialog;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioSystem;
+
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
+
 import javax.swing.UIManager;
 import model.Banheiro;
 import model.Corredor;
@@ -102,6 +107,8 @@ public class Jogo {
     private JPanel pstatusNormais;
     private JPanel pstatusChaveMestra; // Status Chave Mestra do ppainelEsq
     
+    private Clip clip;
+    
     private static Jogo instance;
 
     public synchronized static Jogo getInstance() { //Forma para instanciar a classe sem alocar objetos
@@ -143,7 +150,10 @@ public class Jogo {
         pstatusNormais = new JPanel();
         pstatusChaveMestra = new JPanel();
         
+        setAudio("normal.wav");
+        
         montarJanelaBorderLayout();
+        clip.start();
         gerarDificuldade();
     }
     
@@ -187,10 +197,37 @@ public class Jogo {
         
     }
 
-    private void iniciarAmbientes (int dificuldade) {
+    private void iniciarAmbientes(int dificuldade) {
         // inicializa as saidas dos ambientes
         ajustarAmbientesDoJogo(dificuldade);
         ambienteAtual = ambientes.get(1);  // o jogo comeca na sala de tv
+    }
+   
+    
+    private void setAudio(String arquivo) {
+        try {
+            File file = new File("src/view/" + arquivo);         
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(file));
+            clip.loop(clip.LOOP_CONTINUOUSLY);
+        } catch (IOException e) {
+            System.out.println("Erro na abertura do arquivo para música");
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(Jogo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedAudioFileException ex) {
+            Logger.getLogger(Jogo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void trocarAudio(String file) {
+        if (clip.isRunning()) {
+            clip.stop();
+            clip.close();
+        }
+
+        setAudio(file);
+        clip.setFramePosition(0);
+        clip.start();
     }
 
     /**
@@ -364,15 +401,11 @@ public class Jogo {
             
             configTemp =  new JLabel(infoEsq[0]);
             configTemp.setFont(new Font("Arial", Font.BOLD, 20));
-            pstatusChaveMestra.add(configTemp); //Durabilidade da chave
-            
-            //ppainelEsq.add(configTemp); 
-        
+            pstatusChaveMestra.add(configTemp); //Durabilidade da chave   
+
             configTemp =  new JLabel(infoEsq[1]);
             configTemp.setFont(new Font("Arial", Font.BOLD, 20));
             pstatusChaveMestra.add(configTemp); // mestra
-            
-            //ppainelEsq.add(configTemp); // mestra
             
             ldurabilidade = new JLabel(infoEsq[2]);
             ldurabilidade.setFont(new Font("Arial", Font.ROMAN_BASELINE, 20));
@@ -380,7 +413,7 @@ public class Jogo {
             
             pstatusChaveMestra.setBackground(Color.WHITE);
             pstatusChaveMestra.setLayout(new BoxLayout(pstatusChaveMestra, BoxLayout.Y_AXIS) );
-            //ppainelEsq.add(ldurabilidade);//display durabilidade
+          
             ppainelEsq.repaint();
     }
 
@@ -699,7 +732,6 @@ public class Jogo {
         fjanela.add(painelCentro,( BorderLayout.CENTER));
         
         fjanela.pack();
-        
     }
     
     private void montagemPainelEsquerdo() {
@@ -724,6 +756,7 @@ public class Jogo {
         
         ppainelEsq.add(pstatusNormais);
         
+        pstatusChaveMestra.setBackground(Color.WHITE);
         ppainelEsq.add(pstatusChaveMestra);
         
         ppainelEsq.setBackground(Color.WHITE);
@@ -852,13 +885,16 @@ public class Jogo {
                     JOptionPane.showMessageDialog(fjanela,"Obrigado por jogar. Ate mais!");
                     fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
                     
-                }else if(quantidadeTentativas == 0) {
+                }else if ((quantidadeTentativas == 0) && (!temChaveMestra)) {      
+                    trocarAudio("gameOver.wav");
                     JOptionPane.showMessageDialog(fjanela,"Game Over! Suas tentativas acabaram!");
                     fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
                 }else if(terminado == 2) {
+                    trocarAudio("winner.wav");
                     JOptionPane.showMessageDialog(fjanela,"CONGRATULATIONS!!! Voce venceu!!! Voce encontrou o tesouro escondido!");
                     fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
                 }else if(terminado == 3) {
+                    trocarAudio("gameOver.wav");
                     JOptionPane.showMessageDialog(fjanela,"GAME OVER! Voce gastou sua carga explosiva e nao encontrou o tesouro.");
                     fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
                 }
