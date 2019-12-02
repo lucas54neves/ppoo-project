@@ -261,7 +261,7 @@ public class Jogo {
         return 
             "Bem-vindo ao A Casa Mal Assombrada! \n" +
             "A Casa Mal Assombrada eh um novo jogo de suspense. \n" +
-            "Digite 'Ajuda' se voce precisar de ajuda. \n" +
+            "Digite 'Ajuda' ou clique em Ajuda -> Exibir se voce precisar de ajuda. \n" +
             "Não se esqueça que os comandos começam com letra maiúscula. \n";
     }
 
@@ -733,39 +733,7 @@ public class Jogo {
         
         montagemPainelInferior();
         
-        //////Painel Centro
-        JPanel painelCentro = new JPanel();
-        painelCentro.setBackground(Color.WHITE);
-        painelCentro.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
-        painelCentro.setSize(100, 50);
-        painelCentro.setLayout(new BorderLayout());
-        painelCentro.add(lrotuloMap, BorderLayout.CENTER);
-        
-        JPanel miniPanel = new JPanel();
-        JButton botaoBomb = new JButton(new ImageIcon("src/view/bomb.gif"));
-        botaoBomb.setPreferredSize(new Dimension(60, 60));
-        botaoBomb.addActionListener(
-                new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(ambienteAtual.getDescricao().equals(ambientes.get(localizacaoTesouro).getDescricao())) {
-                    saudacaoWinner();
-                } else {
-                    saudacaoLoser();
-                }
-            }
-        }
-        );
-        
-        miniPanel.add(botaoBomb);
-        miniPanel.setLayout(new FlowLayout(10));
-        miniPanel.setBackground(Color.WHITE);
-        miniPanel.add(botaoBomb);
-        
-        painelCentro.add(miniPanel, BorderLayout.SOUTH);
-        
-        
-        fjanela.add(painelCentro,( BorderLayout.CENTER));
+        montarPainelCentro();
         
         montarMenuBr();
         
@@ -864,9 +832,46 @@ public class Jogo {
         fjanela.add(ppainelInferior, BorderLayout.SOUTH);
     }
     
-    private void montarMenuBr (){
+    private void montarPainelCentro() {
+        //////Painel Centro
+        JPanel painelCentro = new JPanel();
+        painelCentro.setBackground(Color.WHITE);
+        painelCentro.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
+        painelCentro.setSize(100, 50);
+        painelCentro.setLayout(new BorderLayout());
+        painelCentro.add(lrotuloMap, BorderLayout.CENTER);
+        
+        JPanel miniPanel = new JPanel();
+        JButton botaoBomb = new JButton(new ImageIcon("src/view/bomb.gif"));
+        botaoBomb.setPreferredSize(new Dimension(60, 60));
+        botaoBomb.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(ambienteAtual.getDescricao().equals(ambientes.get(localizacaoTesouro).getDescricao())) {
+                    saudacaoWinner();
+                } else {
+                    saudacaoLoser();
+                }
+            }
+        }
+        );
+        
+        miniPanel.add(botaoBomb);
+        miniPanel.setLayout(new FlowLayout(10));
+        miniPanel.setBackground(Color.WHITE);
+        miniPanel.add(botaoBomb);
+        
+        painelCentro.add(miniPanel, BorderLayout.SOUTH);
+        
+        
+        fjanela.add(painelCentro,( BorderLayout.CENTER));
+    }
+    
+    private void montarMenuBr() {
         //MenuBar
         JMenuBar barraMenu = new JMenuBar();
+        
         JMenu menuAjuda = new JMenu("Ajuda");
         JMenuItem botaoAjuda = new JMenuItem("Exibir");
         botaoAjuda.addActionListener(new ActionListener() {
@@ -875,8 +880,22 @@ public class Jogo {
                 JOptionPane.showMessageDialog(fjanela, imprimirAjuda());
             }
         });
+        
+        JMenuItem botaoAutoComplete = new JMenuItem("Auto Completa");
+        botaoAutoComplete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(fjanela, "A funcionalidade de substituir "
+                        + "a primeira letra da primeira palavra de minúsculo para maiúscula "
+                        + "é automático. \n"
+                        + "Para completar o comando basta digitar as palavras "
+                        + "similares e pressionar a tecla 'ctrl', isso funciona \n"
+                        + "também com nomes dos cenários");
+            }
+        });
                 
         menuAjuda.add(botaoAjuda);
+        menuAjuda.add(botaoAutoComplete);
         barraMenu.add(menuAjuda);
         fjanela.setJMenuBar(barraMenu);
     }

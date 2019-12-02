@@ -1,6 +1,6 @@
-Localização do tesouro: Sala de jantar da casa
-Dica1 -> Tesouro não está: Primeiro banheiro da casa
+Localização do tesouro: Corredor da casa
+Dica1 -> Tesouro não está: Sala de jantar da casa
 Dica2 -> Tesouro não está: Segundo banheiro da casa
-Dica3 -> Tesouro não está: Quarto 1 da casa
-Dica Alternativa -> Tesouro está próximo: Sala de tv da casa
-Localização da chave Mestra: Sala de jantar da casa
+Dica3 -> Tesouro não está: Cozinha da casa
+Dica Alternativa -> Tesouro está próximo: Quarto 1 da casa
+Localização da chave Mestra: Segundo banheiro da casa
