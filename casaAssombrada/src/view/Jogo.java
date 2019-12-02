@@ -37,6 +37,7 @@ import model.Ambiente;
 import controller.Comando;
 import controller.SistemaDeArquivoTxt;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -58,6 +59,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -735,8 +738,33 @@ public class Jogo {
         painelCentro.setBackground(Color.WHITE);
         painelCentro.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
         painelCentro.setSize(100, 50);
-        painelCentro.setLayout(new GridLayout());
-        painelCentro.add(lrotuloMap);
+        painelCentro.setLayout(new BorderLayout());
+        painelCentro.add(lrotuloMap, BorderLayout.CENTER);
+        
+        JPanel miniPanel = new JPanel();
+        JButton botaoBomb = new JButton(new ImageIcon("src/view/bomb.gif"));
+        botaoBomb.setPreferredSize(new Dimension(60, 60));
+        botaoBomb.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(ambienteAtual.getDescricao().equals(ambientes.get(localizacaoTesouro).getDescricao())) {
+                    saudacaoWinner();
+                } else {
+                    saudacaoLoser();
+                }
+            }
+        }
+        );
+        
+        miniPanel.add(botaoBomb);
+        miniPanel.setLayout(new FlowLayout(10));
+        miniPanel.setBackground(Color.WHITE);
+        miniPanel.add(botaoBomb);
+        
+        painelCentro.add(miniPanel, BorderLayout.SOUTH);
+        
+        
         fjanela.add(painelCentro,( BorderLayout.CENTER));
         
         montarMenuBr();
@@ -870,11 +898,27 @@ public class Jogo {
         ppainelInferior.repaint();
     }
     
-    /**
-     * Metodo para exibir a janela
-     */
-    private void exibir () {
-        fjanela.setVisible(true);
+    private void saudacaoSair() {
+        JOptionPane.showMessageDialog(fjanela,"Obrigado por jogar. Ate mais!");
+        fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
+    }
+
+    private void saudacaoTerminadoTentivas() {
+        trocarAudio("gameOver.wav");
+        JOptionPane.showMessageDialog(fjanela,"Game Over! Suas tentativas acabaram!");
+        fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
+    }
+
+    private void saudacaoWinner() {
+        trocarAudio("winner.wav");
+        JOptionPane.showMessageDialog(fjanela,"CONGRATULATIONS!!! Voce venceu!!! Voce encontrou o tesouro escondido!");
+        fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
+    }
+
+    private void saudacaoLoser() {
+        trocarAudio("gameOver.wav");
+        JOptionPane.showMessageDialog(fjanela,"GAME OVER! Voce gastou sua carga explosiva e nao encontrou o tesouro.");
+        fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
     }
     
     /**
@@ -934,21 +978,14 @@ public class Jogo {
                 
                 terminado = processarComando(comando);
                 if(terminado == 1) {
-                    JOptionPane.showMessageDialog(fjanela,"Obrigado por jogar. Ate mais!");
-                    fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
+                    saudacaoSair();
                     
                 }else if ((quantidadeTentativas == 0) && (!temChaveMestra)) {      
-                    trocarAudio("gameOver.wav");
-                    JOptionPane.showMessageDialog(fjanela,"Game Over! Suas tentativas acabaram!");
-                    fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
+                    saudacaoTerminadoTentivas();
                 }else if(terminado == 2) {
-                    trocarAudio("winner.wav");
-                    JOptionPane.showMessageDialog(fjanela,"CONGRATULATIONS!!! Voce venceu!!! Voce encontrou o tesouro escondido!");
-                    fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
+                    saudacaoWinner();
                 }else if(terminado == 3) {
-                    trocarAudio("gameOver.wav");
-                    JOptionPane.showMessageDialog(fjanela,"GAME OVER! Voce gastou sua carga explosiva e nao encontrou o tesouro.");
-                    fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
+                    saudacaoLoser();
                 }
             }
             
@@ -1003,4 +1040,12 @@ public class Jogo {
         }
        
     }
+    
+    /**
+     * Metodo para exibir a janela
+     */
+    private void exibir () {
+        fjanela.setVisible(true);
+    }
+    
 }
