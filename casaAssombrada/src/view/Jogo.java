@@ -68,7 +68,7 @@ import model.SalaJantar;
 import model.SalaTv;
 
 public class Jogo {
-    private Analisador analisador;
+   
     private Ambiente ambienteAtual;
     private Random gerador;
     private int quantidadeTentativas;
@@ -121,12 +121,11 @@ public class Jogo {
      * Cria o jogo e incializa seu mapa interno.
      */
     private Jogo() {
-        ambientes = new ArrayList<Ambiente>();
+        ambientes = new ArrayList<>();
         gerador = new Random();
         criarAmbientes();
         
         iniciarAmbientes(dificuldade);
-        analisador = new Analisador();
         temChaveMestra = false;
         quantidadeTentativas = gerarAleatorio(20, 50, null, null, null, null);
         durabilidade = gerarAleatorio(1, 12, null, null, null, null);
@@ -209,12 +208,10 @@ public class Jogo {
             File file = new File("src/view/" + arquivo);         
             clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(file));
-            clip.loop(clip.LOOP_CONTINUOUSLY);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (IOException e) {
             System.out.println("Erro na abertura do arquivo para música");
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(Jogo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedAudioFileException ex) {
+        } catch (LineUnavailableException | UnsupportedAudioFileException ex) {
             Logger.getLogger(Jogo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -264,16 +261,16 @@ public class Jogo {
         System.out.println("comando" + comando.getPalavraDeComando());
         
         String palavraDeComando = comando.getPalavraDeComando();
-        if (palavraDeComando.equals(PalavrasComando.getComando(2))) {
+        if (palavraDeComando.equals( Analisador.getComandoValido(2))) {
             JOptionPane.showMessageDialog(fjanela, imprimirAjuda());
-        } else if (palavraDeComando.equals(PalavrasComando.getComando(0)))
+        } else if (palavraDeComando.equals(Analisador.getComandoValido(0)))
             irParaAmbiente(comando);
-        else if (palavraDeComando.equals(PalavrasComando.getComando(1)))
+        else if (palavraDeComando.equals(Analisador.getComandoValido(1)))
             return sair(comando);
-        else if (palavraDeComando.equals(PalavrasComando.getComando(3))) {
+        else if (palavraDeComando.equals(Analisador.getComandoValido(3))) {
             observar();
         }
-        else if(palavraDeComando.equals(PalavrasComando.getComando(4))){
+        else if(palavraDeComando.equals(Analisador.getComandoValido(4))){
             if(ambienteAtual.getDescricao().equals(ambientes.get(localizacaoTesouro).getDescricao()))
                 return 2;
             else
@@ -291,7 +288,7 @@ public class Jogo {
     private String imprimirAjuda() {
 
         return "Voce esta perdido, sozinho e pela casa \n \n" +
-        "Suas palavras de comando sao: " + analisador.getComandos();
+        "Suas palavras de comando sao: " + Analisador.getComandos();
     }
 
 
@@ -321,7 +318,7 @@ public class Jogo {
                 if (proximoAmbiente == null) {
                     JOptionPane.showMessageDialog(fjanela, "Nao ha passagem! \n ");
                     locAtualDefault();
-                } else {;
+                } else {
                     ambienteAtual = proximoAmbiente;
                     setVerificaNovasDicas();
                     locAtualDefault();
@@ -476,7 +473,7 @@ public class Jogo {
      */
     private String infoDireitaBar () {
         String mensageDir = "Dicas encontradas: \n";
-        if (ambienteAtual.getDica() != "") {
+        if (!ambienteAtual.getDica().equals("")) {
             JOptionPane.showMessageDialog(fjanela, "Você conseguiu uma dica");
             mensageDir += ambienteAtual.getDica() + "\n";
         }
@@ -716,10 +713,6 @@ public class Jogo {
  
         montagemPainelDireito();
         
-//        if (temChaveMestra) {
-//           setPainelEsqComChaveMestra();
-//        }
-        
         montagemPainelInferior();
         
         //////Painel Centro
@@ -855,19 +848,44 @@ public class Jogo {
      */
     private class OnEnter implements KeyListener {
         
-        public OnEnter() {}
-        
+        /**Método que troca a primeira letra da frase por maiúscula, por princípio
+         * de evitar erros.
+         * @param e
+         */
         @Override
-        public void keyTyped(KeyEvent e) {}
+        public void keyTyped(KeyEvent e) {
+            String test = tCampoDigitacao.getText();
+            String[] fraseSeparada;
+            if ( ( (!(test.equals(""))) || (!(test.equals(" "))) ) && 
+                    (tCampoDigitacao.getText().length() == 1) ){
+                
+                fraseSeparada = tCampoDigitacao.getText().split(" ");
+
+                if ((fraseSeparada.length > 0) && (!fraseSeparada[0].toUpperCase().equals(fraseSeparada[0])) ) {
+                    fraseSeparada[0] = fraseSeparada[0].substring(0,1).toUpperCase() + fraseSeparada[0].substring(1);
+                    if (fraseSeparada.length > 1) {
+                        fraseSeparada[1] = fraseSeparada[1].substring(0,1).toUpperCase() + fraseSeparada[1].substring(1);
+                    }
+
+                    String frase = "";
+                    for (String palavra : fraseSeparada) {
+                        frase += palavra;
+                    }
+
+                    tCampoDigitacao.setText(frase);
+                    tCampoDigitacao.repaint();
+                }
+             
+            }
+        }
 
         /**
-         * Realiza operacoes de acordo com a tecla pressionada
+         * Realiza subimissão da frase ao pressionar ENTER
          * @param e 
          */
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                mudarIniciais();
                
                 String fraseDigitada = tCampoDigitacao.getText();
   
@@ -875,7 +893,7 @@ public class Jogo {
                 Comando comando;
                 
                 System.out.println(fraseDigitada);
-                comando = analisador.pegarComando(fraseDigitada);
+                comando = Analisador.pegarComando(fraseDigitada);
                 
                 //Limpando o StringBuilder
                 tCampoDigitacao.setText("");
@@ -898,36 +916,77 @@ public class Jogo {
                     JOptionPane.showMessageDialog(fjanela,"GAME OVER! Voce gastou sua carga explosiva e nao encontrou o tesouro.");
                     fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
                 }
-            } else if (e.getKeyCode() == KeyEvent.VK_TAB) {
-                /* Implemente aqui o autocomplete de palavra a partir quando 
-                    apertar TAB.
-                */
             }
             
         }
 
-        @Override
-        public void keyReleased(KeyEvent e) {}
-        
-        /**
-         * Altera para maiusculas as letras iniciais das duas primeiras palavras
-         * digitadas pelo usuario
+        /** Método que auto completa a primeira e a segunda palavra apertando ctrl
+         * @param e
+         *
          */
-        public void mudarIniciais() {
-            String[] fraseSeparada = tCampoDigitacao.getText().split(" ");
+        @Override
+        public void keyReleased(KeyEvent e) { 
+
+            if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+                String test = tCampoDigitacao.getText();
+                String[] fraseSeparada = tCampoDigitacao.getText().split(" ");
                 
-                fraseSeparada[0] = fraseSeparada[0].substring(0,1).toUpperCase() + fraseSeparada[0].substring(1);
-                if (fraseSeparada.length > 1) {
-                    fraseSeparada[1] = fraseSeparada[1].substring(0,1).toUpperCase() + fraseSeparada[1].substring(1);
+                if (fraseSeparada.length > 0) {
+                    
+                    if (fraseSeparada.length == 1) {
+                        String[] cmds = Analisador.getComandos().split(" ");
+                        String palavraSimiString = "";
+                        for (String cmd : cmds) {
+                            if (cmd.trim().contains(fraseSeparada[0]))
+                                palavraSimiString = cmd.trim();
+                        }
+                        
+                        if (!palavraSimiString.equals("")) {
+                            tCampoDigitacao.setText(palavraSimiString + " ");
+                            tCampoDigitacao.repaint();
+                        }
+                        
+                        
+                    } else if (fraseSeparada[0].equals(Analisador.getComandoValido(0))) {
+                        
+                        String palavraSimiString = "";
+                        String[] ambSaidas = ambienteAtual.getSaidas().split("\t");
+                        for (String cmd : ambSaidas) {
+                            String palavraTratada = fraseSeparada[1].substring(0,1).toUpperCase();
+                            if (cmd.trim().contains(palavraTratada))
+                                palavraSimiString = cmd.trim();
+                        }
+                        
+                        if (!palavraSimiString.equals("")) {
+                            tCampoDigitacao.setText(fraseSeparada[0] +
+                                   " " + palavraSimiString);
+                            tCampoDigitacao.repaint();
+                        }
+                    }
                 }
-                
-                String frase = "";
-                for (String palavra : fraseSeparada) {
-                    frase += palavra + " ";
-                }
-                
-                tCampoDigitacao.setText(frase);
+            }
+            
         }
+        
+//        /**
+//         * Altera para maiusculas as letras iniciais das duas primeiras palavras
+//         * digitadas pelo usuario
+//         */
+//        public void mudarIniciais() {
+//            String[] fraseSeparada = tCampoDigitacao.getText().split(" ");
+//                
+//            fraseSeparada[0] = fraseSeparada[0].substring(0,1).toUpperCase() + fraseSeparada[0].substring(1);
+//            if (fraseSeparada.length > 1) {
+//                fraseSeparada[1] = fraseSeparada[1].substring(0,1).toUpperCase() + fraseSeparada[1].substring(1);
+//            }
+//
+//            String frase = "";
+//            for (String palavra : fraseSeparada) {
+//                frase += palavra + " ";
+//            }
+//
+//            tCampoDigitacao.setText(frase);
+//        }
        
     }
 }

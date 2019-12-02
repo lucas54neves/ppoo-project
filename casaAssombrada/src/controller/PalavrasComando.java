@@ -25,13 +25,15 @@ public class PalavrasComando {
 
     /**
      * Verifica se uma dada String eh uma palavra de comando valida.
+     * @param umaString
      * @return true se a string dada eh um comando valido,
      * false se nao eh.
      */
-    public boolean ehComando(String umaString) {
-        for(int i = 0; i < comandosValidos.length; i++) {
-            if(comandosValidos[i].equals(umaString))
+    public static boolean ehComando(String umaString) {
+        for (String comandosValido : comandosValidos) {
+            if (comandosValido.equals(umaString)) {
                 return true;
+            }
         }
         // se chegamos aqui, a string nao foi encontrada nos comandos.
         return false;
@@ -39,8 +41,9 @@ public class PalavrasComando {
 
     /**
      * Printa os comandos existentes.
+     * @return 
      */
-    public String getComandos() {
+    public static String getComandos() {
         String retorno = "";
 
         for (String comando : comandosValidos) {

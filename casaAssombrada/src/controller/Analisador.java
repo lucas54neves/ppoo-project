@@ -24,21 +24,18 @@ package controller;
 import java.util.Scanner;
 
 public class Analisador {
-    private PalavrasComando palavrasDeComando;  // guarda todas as palavras de comando validas
-    private Scanner entrada;         // origem da entrada de comandos
 
-    /**
-     * Cria um analisador para ler do terminal.
-     */
-    public Analisador() {
-        palavrasDeComando = new PalavrasComando();
-        entrada = new Scanner(System.in);
-    }
+//    /**
+//     * Cria um analisador para ler do terminal.
+//     */
+//    public Analisador() {
+//        
+//    }
 
     /**
      * @return O proximo comando do usuario
      */
-    public Comando pegarComando(String linha) {
+    public static Comando pegarComando(String linha) {
         
         String[] vetPalavra = linha.split(" ");
         String palavra1 = null;
@@ -53,14 +50,19 @@ public class Analisador {
 
         // Agora verifica se esta palavra eh conhecida. Se for, cria um
         // com ela. Se nao, cria um comando "null" (para comando desconhecido)
-        if (palavrasDeComando.ehComando(palavra1)) {
+        if (PalavrasComando.ehComando(palavra1)) {
             return new Comando(palavra1, palavra2);
         } else {
             return new Comando(null, palavra2);
         }
     }
 
-    public String getComandos() {
-        return palavrasDeComando.getComandos();
+    public static String getComandoValido(int c) {
+        return PalavrasComando.getComando(c);
     }
+    
+    public static String getComandos() {
+        return PalavrasComando.getComandos();
+    }
+    
 }
