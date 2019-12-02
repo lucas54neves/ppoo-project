@@ -35,11 +35,15 @@ import javax.swing.SwingConstants;
 import controller.Analisador;
 import model.Ambiente;
 import controller.Comando;
-import controller.PalavrasComando;
 import controller.SistemaDeArquivoTxt;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -54,6 +58,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import javax.swing.JOptionPane;
 
@@ -196,13 +203,18 @@ public class Jogo {
         
     }
 
+    /**
+     * @param dificuldade 
+     */
     private void iniciarAmbientes(int dificuldade) {
         // inicializa as saidas dos ambientes
         ajustarAmbientesDoJogo(dificuldade);
         ambienteAtual = ambientes.get(1);  // o jogo comeca na sala de tv
     }
    
-    
+    /** Põem audio no objeto de que inicia música do jogo.
+     * @param arquivo - Nome da música e a extensão (.wav)
+     */
     private void setAudio(String arquivo) {
         try {
             File file = new File("src/view/" + arquivo);         
@@ -216,6 +228,9 @@ public class Jogo {
         }
     }
     
+    /** Troca a música do jogo caso ganhe ou perca.
+     * @param file - Nome do audio e sua extensão.
+     */
     private void trocarAudio(String file) {
         if (clip.isRunning()) {
             clip.stop();
@@ -548,8 +563,8 @@ public class Jogo {
         return numAle;
     }
     
-    /**
-     * Ajusta os ambientes do jogo
+    /** Ajusta os ambientes do jogo
+     *  @param dificuldade 
      */
     private void ajustarAmbientesDoJogo (int dificuldade) {
         setSaidaDoAmbiente(0,1,1,dificuldade); // Escritorio <- 1 e salaTv
@@ -724,6 +739,8 @@ public class Jogo {
         painelCentro.add(lrotuloMap);
         fjanela.add(painelCentro,( BorderLayout.CENTER));
         
+        montarMenuBr();
+        
         fjanela.pack();
     }
     
@@ -817,6 +834,23 @@ public class Jogo {
         ppainelInferior.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));//Adiciona Borda Preta
         ppainelInferior.setLayout(new BoxLayout(ppainelInferior, BoxLayout.Y_AXIS));
         fjanela.add(ppainelInferior, BorderLayout.SOUTH);
+    }
+    
+    private void montarMenuBr (){
+        //MenuBar
+        JMenuBar barraMenu = new JMenuBar();
+        JMenu menuAjuda = new JMenu("Ajuda");
+        JMenuItem botaoAjuda = new JMenuItem("Exibir");
+        botaoAjuda.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(fjanela, imprimirAjuda());
+            }
+        });
+                
+        menuAjuda.add(botaoAjuda);
+        barraMenu.add(menuAjuda);
+        fjanela.setJMenuBar(barraMenu);
     }
     
     
@@ -967,26 +1001,6 @@ public class Jogo {
             }
             
         }
-        
-//        /**
-//         * Altera para maiusculas as letras iniciais das duas primeiras palavras
-//         * digitadas pelo usuario
-//         */
-//        public void mudarIniciais() {
-//            String[] fraseSeparada = tCampoDigitacao.getText().split(" ");
-//                
-//            fraseSeparada[0] = fraseSeparada[0].substring(0,1).toUpperCase() + fraseSeparada[0].substring(1);
-//            if (fraseSeparada.length > 1) {
-//                fraseSeparada[1] = fraseSeparada[1].substring(0,1).toUpperCase() + fraseSeparada[1].substring(1);
-//            }
-//
-//            String frase = "";
-//            for (String palavra : fraseSeparada) {
-//                frase += palavra + " ";
-//            }
-//
-//            tCampoDigitacao.setText(frase);
-//        }
        
     }
 }
