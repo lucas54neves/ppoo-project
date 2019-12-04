@@ -19,9 +19,7 @@ public class PalavrasComando {
     /**
      * Construtor - inicializa as palavras de comando.
      */
-    public PalavrasComando() {
-        // nada a fazer no momento...
-    }
+    public PalavrasComando(){}
 
     /**
      * Verifica se uma dada String eh uma palavra de comando valida.

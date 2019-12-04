@@ -848,10 +848,12 @@ public class Jogo {
                 new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(ambienteAtual.getDescricao().equals(ambientes.get(localizacaoTesouro).getDescricao())) {
-                    saudacaoWinner();
-                } else {
-                    saudacaoLoser();
+                if((e.getModifiers() == KeyEvent.MOUSE_EVENT_MASK)){
+                    if(ambienteAtual.getDescricao().equals(ambientes.get(localizacaoTesouro).getDescricao())) {
+                        saudacaoWinner();
+                    } else {
+                        saudacaoLoser();
+                    }
                 }
             }
         }
