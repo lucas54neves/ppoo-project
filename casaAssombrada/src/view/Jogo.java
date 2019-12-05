@@ -20,7 +20,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
@@ -42,9 +41,6 @@ import java.awt.Font;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -59,7 +55,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -121,6 +116,10 @@ public class Jogo {
     
     private static Jogo instance;
 
+    /**
+     * Padrão de projeto Sigleton: instanciar Jogo apenas uma vez 
+     * que é necessário
+     */
     public synchronized static Jogo getInstance() { //Forma para instanciar a classe sem alocar objetos
         if (instance == null)
             instance = new Jogo();
@@ -128,7 +127,8 @@ public class Jogo {
     }
     
     /**
-     * Cria o jogo e incializa seu mapa interno.
+     * Instância todos os atributos do Jogo 
+     * incializa seu mapa interno .
      */
     private Jogo() {
         ambientes = new ArrayList<>();
@@ -165,15 +165,8 @@ public class Jogo {
         clip.start();
         gerarDificuldade();
     }
-    
-    private void gerarDificuldade() {
-        UIManager.put("OptionPane.cancelButtonText", "Difícil");
-        UIManager.put("OptionPane.noButtonText", "Moderado");
-        UIManager.put("OptionPane.yesButtonText", "Fácil");
-        dificuldade = JOptionPane.showConfirmDialog(null, "Qual dificuldade desejada?");
-    }
 
-    /**
+    /** 
      * Cria todos os ambientes e liga as saidas deles
      */
     private void criarAmbientes() {
@@ -214,6 +207,94 @@ public class Jogo {
         ajustarAmbientesDoJogo(dificuldade);
         ambienteAtual = ambientes.get(1);  // o jogo comeca na sala de tv
     }
+    
+    /** Ajusta os ambientes do jogo
+     *  @param dificuldade 
+     */
+    private void ajustarAmbientesDoJogo (int dificuldade) {
+        setSaidaDoAmbiente(0,1,1,dificuldade); // Escritorio <- 1 e salaTv
+        
+        setSaidaDoAmbiente(1,0,0,dificuldade); //Sala de TV <- 0 e Escritorio
+        setSaidaDoAmbiente(1,3,3,dificuldade); //Sala de TV <- 3 e Sala de Jantar
+        setSaidaDoAmbiente(1,2,2,dificuldade); //Sala de TV <- 2 e Jardim
+        
+        setSaidaDoAmbiente(2,1,1,dificuldade); //Jardim <- 1 e salaTV
+        setSaidaDoAmbiente(2,4,4,dificuldade); //Jardim <- 4 cozinha
+        
+        setSaidaDoAmbiente(3,1,1,dificuldade); //Sala de Jantar <- 1 e salaTv
+        setSaidaDoAmbiente(3,4,4,dificuldade); //Sala de Jantar <- 4 e cozinha
+        setSaidaDoAmbiente(3,7,7,dificuldade); //Sala de Jantar <- 7 e corredor
+        
+        setSaidaDoAmbiente(4,3,3,dificuldade); //Cozinha <- 3 e sala de Jantar
+        setSaidaDoAmbiente(4,2,2,dificuldade); //Cozinha <- 2 e jardim
+        
+        setSaidaDoAmbiente(5,7,7,dificuldade); //Quarto 1 <- 7 e Corredor
+        
+        setSaidaDoAmbiente(6,7,7,dificuldade); //Quarto 2 <- 7 e Corredor
+        
+        setSaidaDoAmbiente(7,3,3,dificuldade); //Corredor <- 3 e sala de jantar
+        setSaidaDoAmbiente(7,5,5,dificuldade); //Corredor <- 1 e Quarto 1 
+        setSaidaDoAmbiente(7,6,6,dificuldade); //Corredor <- 6 e Quarto 2
+        setSaidaDoAmbiente(7,10,10,dificuldade); //Corredor <- 10 e Quarto 3
+        setSaidaDoAmbiente(7,9,9,dificuldade); //Corredor <- 9 e Quarto 4
+        setSaidaDoAmbiente(7,8,8,dificuldade); //Corredor <- 8 e Banheiro 1
+        
+        setSaidaDoAmbiente(8,7,7,dificuldade); //Banheiro 1 <- 7 e Corredor
+        
+        setSaidaDoAmbiente(9,7,7,dificuldade); //Quarto 4 <- 7 e Corredor
+        
+        setSaidaDoAmbiente(10,7,7,dificuldade); //Quarto 3 <- 7 e Corredor 
+        setSaidaDoAmbiente(10,11,11,dificuldade); //Quarto 3 <- 11 e Banheiro 2
+        
+        setSaidaDoAmbiente(11,10,10,dificuldade); //Banheiro 2 <- 10 e Quarto 3
+    }
+    
+    
+        /**
+     * Gera onde nao esta o tesouro
+     * @param locTesouro
+     * @param locDicaProx 
+     */
+    private void geradorNaoEstaTesouro(int locTesouro, int locDicaProx) {
+        naoEstaTesouro = new int[3];
+        int ca;
+        Integer nProx = null;
+        Integer nProx2 = null;
+        for (int i = 0; i < 3; ++i) {
+            ca = gerarAleatorio(0, 11, (Integer)locTesouro, 
+                    (Integer)locDicaProx, nProx, nProx2);
+            nProx2 = nProx;
+            nProx = ca;
+            naoEstaTesouro[i] = ca;
+        }
+    }
+    
+    
+    /**
+     * Configura os ambientes
+     */
+    private void configurarAmbientes() {
+        ambientes.get(localizacaoTesouro).setTesouro();
+        String nomeAmb;
+        for (int pos : naoEstaTesouro) {
+            nomeAmb = ambientes.get(pos).getDescricao();
+           ambientes.get(pos).setDica("O tesouro não está no(a) \n" + nomeAmb);
+        }
+        nomeAmb = ambientes.get(proximoTesouro).getDescricao();
+        ambientes.get(proximoTesouro).setDica("O tesouro está próximo ao(à)\n" + nomeAmb);
+        ambientes.get(localizacaoChaveMestra).setChaveMestra();
+    }
+    
+   /**
+     * Chama o metodo que salva os dados em um arquivo texto
+     */
+    private void salvarDados() {
+        try {
+            SistemaDeArquivoTxt.salvar(prepararDados());
+        } catch (IOException e) {
+            System.out.println("Falha ao salvar dados");
+        }
+    }
    
     /** Põem audio no objeto de que inicia música do jogo.
      * @param arquivo - Nome da música e a extensão (.wav)
@@ -244,14 +325,37 @@ public class Jogo {
         clip.setFramePosition(0);
         clip.start();
     }
+    
+    
+    /**
+     * Quando o ocorrer o evento de apertar o botão da bomba ou
+     * de digitar o comando é setado o efeito de bomba .
+     */
+    private void colocaBombEffect() {
+        trocarAudio("bomb_effect.wav");
+        if (clip.isRunning()) {
+            clip.stop();
+            clip.close();
+        }
+    }
+    
+    /**Mostra um painel para ser selecionado a dificuldade do
+     * jogo.
+     */
+    private void gerarDificuldade() {
+        UIManager.put("OptionPane.cancelButtonText", "Difícil");
+        UIManager.put("OptionPane.noButtonText", "Moderado");
+        UIManager.put("OptionPane.yesButtonText", "Fácil");
+        dificuldade = JOptionPane.showConfirmDialog(null, "Qual dificuldade desejada?");
+    }
 
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
     public void jogar() {
         exibir();
-        
     }
+    
 
     /**
      * Métoodo adaptado para interface gráfica
@@ -275,8 +379,6 @@ public class Jogo {
             JOptionPane.showMessageDialog(fjanela,"Eu nao entendi o que voce disse...");
             return 0;
         }
-
-        System.out.println("comando" + comando.getPalavraDeComando());
         
         String palavraDeComando = comando.getPalavraDeComando();
         if (palavraDeComando.equals( Analisador.getComandoValido(2))) {
@@ -325,10 +427,7 @@ public class Jogo {
 
         // Tenta sair do ambiente atual
         Ambiente proximoAmbiente = ambienteAtual.getAmbiente(direcao);
-        System.out.println("direcao: " + direcao);
-        System.out.println("direcao: " + proximoAmbiente);
-        
-        
+               
         if (temChaveMestra) {
             String escolha = JOptionPane.showInputDialog(fjanela, "Deseja usar a chave mestra ? [sim / nao]");
             if (escolha != null && escolha.equals("sim")) {
@@ -452,7 +551,6 @@ public class Jogo {
      * @return String localizacao atual
      */
     private String imprimirLocalizacaoAtual() {
-        System.out.println("Onde você está : "  + ambienteAtual.getDescricao());
         String locAtual = "Voce esta: " + ambienteAtual.getDescricao() + "\n";
         String[] tempSplit = ambienteAtual.getSaidas().split("\t");
         String temp = "";
@@ -491,8 +589,10 @@ public class Jogo {
      */
     private String infoDireitaBar () {
         String mensageDir = "Dicas encontradas: \n";
-        if (!ambienteAtual.getDica().equals("")) {
+        if (!ambienteAtual.getDica().equals("") 
+                && !(ambienteAtual.isDicaAcessada())) {
             JOptionPane.showMessageDialog(fjanela, "Você conseguiu uma dica");
+            ambienteAtual.setDicaAcessada(true);
             mensageDir += ambienteAtual.getDica() + "\n";
         }
         if (ambienteAtual.isChaveMestra() && temChaveMestra == false 
@@ -566,46 +666,7 @@ public class Jogo {
         return numAle;
     }
     
-    /** Ajusta os ambientes do jogo
-     *  @param dificuldade 
-     */
-    private void ajustarAmbientesDoJogo (int dificuldade) {
-        setSaidaDoAmbiente(0,1,1,dificuldade); // Escritorio <- 1 e salaTv
-        
-        setSaidaDoAmbiente(1,0,0,dificuldade); //Sala de TV <- 0 e Escritorio
-        setSaidaDoAmbiente(1,3,3,dificuldade); //Sala de TV <- 3 e Sala de Jantar
-        setSaidaDoAmbiente(1,2,2,dificuldade); //Sala de TV <- 2 e Jardim
-        
-        setSaidaDoAmbiente(2,1,1,dificuldade); //Jardim <- 1 e salaTV
-        setSaidaDoAmbiente(2,4,4,dificuldade); //Jardim <- 4 cozinha
-        
-        setSaidaDoAmbiente(3,1,1,dificuldade); //Sala de Jantar <- 1 e salaTv
-        setSaidaDoAmbiente(3,4,4,dificuldade); //Sala de Jantar <- 4 e cozinha
-        setSaidaDoAmbiente(3,7,7,dificuldade); //Sala de Jantar <- 7 e corredor
-        
-        setSaidaDoAmbiente(4,3,3,dificuldade); //Cozinha <- 3 e sala de Jantar
-        setSaidaDoAmbiente(4,2,2,dificuldade); //Cozinha <- 2 e jardim
-        
-        setSaidaDoAmbiente(5,7,7,dificuldade); //Quarto 1 <- 7 e Corredor
-        
-        setSaidaDoAmbiente(6,7,7,dificuldade); //Quarto 2 <- 7 e Corredor
-        
-        setSaidaDoAmbiente(7,3,3,dificuldade); //Corredor <- 3 e sala de jantar
-        setSaidaDoAmbiente(7,5,5,dificuldade); //Corredor <- 1 e Quarto 1 
-        setSaidaDoAmbiente(7,6,6,dificuldade); //Corredor <- 6 e Quarto 2
-        setSaidaDoAmbiente(7,10,10,dificuldade); //Corredor <- 10 e Quarto 3
-        setSaidaDoAmbiente(7,9,9,dificuldade); //Corredor <- 9 e Quarto 4
-        setSaidaDoAmbiente(7,8,8,dificuldade); //Corredor <- 8 e Banheiro 1
-        
-        setSaidaDoAmbiente(8,7,7,dificuldade); //Banheiro 1 <- 7 e Corredor
-        
-        setSaidaDoAmbiente(9,7,7,dificuldade); //Quarto 4 <- 7 e Corredor
-        
-        setSaidaDoAmbiente(10,7,7,dificuldade); //Quarto 3 <- 7 e Corredor 
-        setSaidaDoAmbiente(10,11,11,dificuldade); //Quarto 3 <- 11 e Banheiro 2
-        
-        setSaidaDoAmbiente(11,10,10,dificuldade); //Banheiro 2 <- 10 e Quarto 3
-    }
+    
     
     /**
      * Seta a saida do ambiente
@@ -617,24 +678,7 @@ public class Jogo {
         ambientes.get(posAmb).ajustarSaidas(direcoesSaidas[nomeAmb], ambientes.get(posAmbSaida), dificuldade);
     }
     
-    /**
-     * Gera onde nao esta o tesouro
-     * @param locTesouro
-     * @param locDicaProx 
-     */
-    private void geradorNaoEstaTesouro(int locTesouro, int locDicaProx) {
-        naoEstaTesouro = new int[3];
-        int ca;
-        Integer nProx = null;
-        Integer nProx2 = null;
-        for (int i = 0; i < 3; ++i) {
-            ca = gerarAleatorio(0, 11, (Integer)locTesouro, 
-                    (Integer)locDicaProx, nProx, nProx2);
-            nProx2 = nProx;
-            nProx = ca;
-            naoEstaTesouro[i] = ca;
-        }
-    }
+
     
     /**
      * Método para gerar número de uma 
@@ -661,16 +705,7 @@ public class Jogo {
         return ganhador;
     }
     
-    /**
-     * Chama o metodo que salva os dados em um arquivo texto
-     */
-    private void salvarDados() {
-        try {
-            SistemaDeArquivoTxt.salvar(prepararDados());
-        } catch (IOException e) {
-            System.out.println("Falha ao salvar dados");
-        }
-    }
+
     
     /**
      * Prepara os dados para serem salvos no arquivo texto
@@ -685,26 +720,12 @@ public class Jogo {
                 "Localização da chave Mestra: " +  ambientes.get(localizacaoChaveMestra).getDescricao() + "\n";
     }
 
-    /**
-     * Configura os ambientes
-     */
-    private void configurarAmbientes() {
-        ambientes.get(localizacaoTesouro).setTesouro();
-        String nomeAmb;
-        for (int pos : naoEstaTesouro) {
-            nomeAmb = ambientes.get(pos).getDescricao();
-           ambientes.get(pos).setDica("O tesouro não está no(a) \n" + nomeAmb);
-        }
-        nomeAmb = ambientes.get(proximoTesouro).getDescricao();
-        ambientes.get(proximoTesouro).setDica("O tesouro está próximo ao(à)\n" + nomeAmb);
-        ambientes.get(localizacaoChaveMestra).setChaveMestra();
-    }
     
     /**
      * Método para embalharar valores de array
      * @param array - vetor de int[]
      */
-    static void shuffle(int array[]) {
+    private void shuffle(int array[]) {
         int index;
  
         for (int i= array.length; i>1; i--){
@@ -719,6 +740,13 @@ public class Jogo {
     
     
     // #### Metodos de Interface ####
+    
+    /**
+     * Metodo para exibir a janela
+     */
+    private void exibir () {
+        fjanela.setVisible(true);
+    }
     
     /**
      * Monta a janela da interface e inicializa os valores da interface
@@ -740,6 +768,11 @@ public class Jogo {
         fjanela.pack();
     }
     
+    
+    /**Seta todos os componentes necessários para visilização 
+    * e interação do painel esquerdo (Onde os status das tentativas
+    * e da chave mestra caso encontrada).
+    */
     private void montagemPainelEsquerdo() {
         String[] infoEsq = infoEsquerdaBar().split("\n");
         JLabel configTemp = new JLabel(infoEsq[0]);
@@ -772,6 +805,9 @@ public class Jogo {
         fjanela.add(ppainelEsq, BorderLayout.WEST);
     }
     
+    /**Seta todos os componentes necessários para visilização 
+    * e interação do painel Direito (Onde fica as dicas).
+    */
     private void montagemPainelDireito () {
          //////Painel Direito        
         ppainelDir.setBackground(Color.WHITE);
@@ -799,6 +835,11 @@ public class Jogo {
         fjanela.add(scrollbar, BorderLayout.EAST);
     }
     
+    
+    /**Seta todos os componentes necessários para visilização 
+    * e interação do painel Inferior (Onde fica a indicação da localização
+    * e do campo de texto).
+    */
     private void montagemPainelInferior() {
 
         ////////Painel Inferior
@@ -832,6 +873,10 @@ public class Jogo {
         fjanela.add(ppainelInferior, BorderLayout.SOUTH);
     }
     
+    /**Seta todos os componentes necessários para visilização 
+    * e interação do painel Centro (Onde fica o mapa da casa e o
+    * botão de usar o detonador).
+    */
     private void montarPainelCentro() {
         //////Painel Centro
         JPanel painelCentro = new JPanel();
@@ -849,6 +894,8 @@ public class Jogo {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if((e.getModifiers() == KeyEvent.MOUSE_EVENT_MASK)){
+                    colocaBombEffect();
+                    
                     if(ambienteAtual.getDescricao().equals(ambientes.get(localizacaoTesouro).getDescricao())) {
                         saudacaoWinner();
                     } else {
@@ -870,6 +917,10 @@ public class Jogo {
         fjanela.add(painelCentro,( BorderLayout.CENTER));
     }
     
+    /**
+     * Instancia todos os componentes necessários para a barra de menu.
+     * Em que fica o botão de ajuda.
+     */
     private void montarMenuBr() {
         //MenuBar
         JMenuBar barraMenu = new JMenuBar();
@@ -904,7 +955,8 @@ public class Jogo {
     
     
     /**
-     * 
+     * Muda o campo Inferior para mostrar a localização atual
+     * e as direções possíveis.
      */
     private void locAtualDefault () {
         String[] locAtual = imprimirLocalizacaoAtual().split("\n");
@@ -919,23 +971,39 @@ public class Jogo {
         ppainelInferior.repaint();
     }
     
+    /**
+     * Mostra a janela de despedida, ao usar a opção Sair.
+     */
     private void saudacaoSair() {
         JOptionPane.showMessageDialog(fjanela,"Obrigado por jogar. Ate mais!");
         fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
     }
 
+    /**
+     * Mostra a janela de quando as tentativas acabam
+     * e inicia o audio de derrota.
+     */
     private void saudacaoTerminadoTentivas() {
         trocarAudio("gameOver.wav");
         JOptionPane.showMessageDialog(fjanela,"Game Over! Suas tentativas acabaram!");
         fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
     }
 
+    /**
+     * Mostra a janela de quando explodiu no local em que está o 
+     * tesouro e inicia o audio de vitória.
+     */
     private void saudacaoWinner() {
         trocarAudio("winner.wav");
         JOptionPane.showMessageDialog(fjanela,"CONGRATULATIONS!!! Voce venceu!!! Voce encontrou o tesouro escondido!");
         fjanela.dispatchEvent(new WindowEvent(fjanela, WindowEvent.WINDOW_CLOSING));
     }
 
+    
+    /**
+     *Mostra a janela de quando explode no local onde não está o tesouro
+     * e inicia o audio de derrota.
+     */
     private void saudacaoLoser() {
         trocarAudio("gameOver.wav");
         JOptionPane.showMessageDialog(fjanela,"GAME OVER! Voce gastou sua carga explosiva e nao encontrou o tesouro.");
@@ -943,7 +1011,8 @@ public class Jogo {
     }
     
     /**
-     * 
+     * Classe interna, instância no addListerner do atributo
+     * tCampoDigitacao
      */
     private class OnEnter implements KeyListener {
         
@@ -954,27 +1023,15 @@ public class Jogo {
         @Override
         public void keyTyped(KeyEvent e) {
             String test = tCampoDigitacao.getText();
-            String[] fraseSeparada;
+            
             if ( ( (!(test.equals(""))) || (!(test.equals(" "))) ) && 
-                    (tCampoDigitacao.getText().length() == 1) ){
-                
-                fraseSeparada = tCampoDigitacao.getText().split(" ");
-
-                if ((fraseSeparada.length > 0) && (!fraseSeparada[0].toUpperCase().equals(fraseSeparada[0])) ) {
-                    fraseSeparada[0] = fraseSeparada[0].substring(0,1).toUpperCase() + fraseSeparada[0].substring(1);
-                    if (fraseSeparada.length > 1) {
-                        fraseSeparada[1] = fraseSeparada[1].substring(0,1).toUpperCase() + fraseSeparada[1].substring(1);
-                    }
-
-                    String frase = "";
-                    for (String palavra : fraseSeparada) {
-                        frase += palavra;
-                    }
-
-                    tCampoDigitacao.setText(frase);
-                    tCampoDigitacao.repaint();
-                }
-             
+                    (tCampoDigitacao.getText().length() == 1) ) {
+                    modaLetraInicialParaMaiuscula();
+              
+            } else if ( (test.length() > 1) 
+                    && (String.valueOf(test.charAt(0)).equals(" ")) ) {
+                tCampoDigitacao.setText(test.trim());
+                modaLetraInicialParaMaiuscula();
             }
         }
 
@@ -990,8 +1047,7 @@ public class Jogo {
   
                 int terminado = 0;
                 Comando comando;
-                
-                System.out.println(fraseDigitada);
+ 
                 comando = Analisador.pegarComando(fraseDigitada);
                 
                 //Limpando o StringBuilder
@@ -1004,8 +1060,11 @@ public class Jogo {
                 }else if ((quantidadeTentativas == 0) && (!temChaveMestra)) {      
                     saudacaoTerminadoTentivas();
                 }else if(terminado == 2) {
+                    colocaBombEffect();
+                    
                     saudacaoWinner();
                 }else if(terminado == 3) {
+                    colocaBombEffect();
                     saudacaoLoser();
                 }
             }
@@ -1059,14 +1118,33 @@ public class Jogo {
             }
             
         }
+        
+        /**
+         * Método que muda a letra inicail para mauúscula 
+         * e corrige espaços no início do texto
+         */
+        private void modaLetraInicialParaMaiuscula() {
+            String[] fraseSeparada;
+
+            fraseSeparada = tCampoDigitacao.getText().split(" ");
+
+            if ((fraseSeparada.length > 0) && (!fraseSeparada[0].toUpperCase().equals(fraseSeparada[0])) ) {
+                fraseSeparada[0] = fraseSeparada[0].substring(0,1).toUpperCase() + fraseSeparada[0].substring(1);
+                if (fraseSeparada.length > 1) {
+                    fraseSeparada[1] = fraseSeparada[1].substring(0,1).toUpperCase() + fraseSeparada[1].substring(1);
+                }
+
+                String frase = "";
+                for (String palavra : fraseSeparada) {
+                    frase += palavra;
+                }
+
+                tCampoDigitacao.setText(frase);
+                tCampoDigitacao.repaint();
+            }
+        }
        
     }
     
-    /**
-     * Metodo para exibir a janela
-     */
-    private void exibir () {
-        fjanela.setVisible(true);
-    }
     
 }

@@ -25,13 +25,6 @@ import java.util.Scanner;
 
 public class Analisador {
 
-//    /**
-//     * Cria um analisador para ler do terminal.
-//     */
-//    public Analisador() {
-//        
-//    }
-
     /**
      * @return O proximo comando do usuario
      */
@@ -57,10 +50,17 @@ public class Analisador {
         }
     }
 
+    /**
+     * @param c - posição do vetor de palavras de comando .
+     * @return comando .
+     */
     public static String getComandoValido(int c) {
         return PalavrasComando.getComando(c);
     }
     
+    /**
+     *@return Todas as opções de comando 
+    */
     public static String getComandos() {
         return PalavrasComando.getComandos();
     }

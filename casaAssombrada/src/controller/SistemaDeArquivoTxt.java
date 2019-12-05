@@ -9,6 +9,9 @@ import java.io.IOException;
  */
 public class SistemaDeArquivoTxt {
     
+    /** Salva todos os dados necessários para vitória no jogo.
+     * @param dados - Localização de todas as dicas e onde está o tesouro
+     */
     public static void salvar(String dados) throws IOException {
         try (FileWriter arq = new FileWriter("dadosJogo.txt")) {
             arq.write(dados) ;

@@ -89,7 +89,6 @@ public abstract class Ambiente {
      */
     public Porta getSaida(String nome) {
         try {
-            System.out.println(saidas);
             return saidas.get(nome);
         } catch (Exception e) {
             return null;
