@@ -477,6 +477,8 @@ public class Jogo {
     
     
     private void setVerificaNovasDicas() {
+        UIManager.put("OptionPane.cancelButtonText", "Não");
+        UIManager.put("OptionPane.okButtonText", "Sim");
          if ((!"".equals(ambienteAtual.getDica())) && (ambienteAtual.isDicaAcessada() == false)) {
             JOptionPane.showMessageDialog(fjanela, "Você conseguiu uma dica");
             ambienteAtual.setDicaAcessada(true);
